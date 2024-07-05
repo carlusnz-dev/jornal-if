@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Início</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- main content -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h1>Olá, seja bem-vindo! <span th:text="${user.name} + ' ' + ${user.surname}"></span> </h1>
+            <span th:text="${user.username}"></span>
+            <p>Este é um exemplo de aplicação web utilizando Spring Boot e Thymeleaf.</p>
+            <p><a th:href="@{/logout}">Clique aqui</a> para fazer Logout.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
