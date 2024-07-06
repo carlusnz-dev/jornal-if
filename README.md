@@ -17,4 +17,4 @@ E-mail:
 - [Tel (74) 999 33 9123](tel:+55749999339123)
 
 ### Licença
-Este projeto está licenciado sob licença para nenhum uso. Você pode visualizar o arquivo de licença [aqui](LICENCE.md).
+Este projeto está licenciado sob licença para nenhum uso. Você pode visualizar o arquivo de licença [aqui](LICENSE.md).
