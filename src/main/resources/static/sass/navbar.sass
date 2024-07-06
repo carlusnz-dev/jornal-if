@@ -1,0 +1,80 @@
+@import "styles"
+@import "fonts"
+
+// Navbar
+
+.navbar
+  background-color: $navbar-bg
+  border-bottom: 1px solid $navbar-border
+  border-radius: 0
+  margin-bottom: 0
+
+  .offcanvas-body
+    .navbar-nav
+      .nav-item
+        position: relative
+        .nav-link
+          color: $navbar-link-color
+          &:hover
+            color: $navbar-link-color-hover
+          &.active
+            color: $navbar-link-color-active
+            &:hover
+              color: $navbar-link-color-active-hover
+          &.disabled
+            color: $navbar-link-color-disabled
+            &:hover
+              color: $navbar-link-color-disabled-hover
+
+.nav-link:after
+  content: ''
+  display: block
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 0
+  height: 2px
+  background-color: $navbar-link-color
+  transition: width 0.3s
+  &:hover
+    width: 100%
+a.active:after
+  width: 100%
+
+.form-search
+  .form-control
+    border-radius: 10px
+    border-color: $navbar-border
+    color: $navbar-text-color
+    background-color: $quaternary-color
+    transition: all 0.3s ease-in-out
+    &:focus
+      border: 2px solid $primary-color-dark
+      box-shadow: 0 0 8px $quaternary-color
+      transform: scale(1.07)
+    &::placeholder
+      color: $navbar-text-color
+
+  .btn-search
+    background-color: $primary-color-dark
+    color: $quaternary-color
+    border: none
+    border-radius: 0
+    transition: all 0.3s ease-in-out
+    &:hover
+      background-color: $link-color-hover
+      filter: drop-shadow(0 0 0.75rem $link-color-hover)
+      -webkit-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+      -moz-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+    &:focus
+      background-color: $link-color-hover
+      filter: drop-shadow(0 0 0.75rem $link-color-hover)
+      -webkit-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+      -moz-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+    &:active
+      background-color: $link-color-hover
+      filter: drop-shadow(0 0 0.75rem $link-color-hover)
+      -webkit-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+      -moz-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+    &:disabled
+      background-color: $link-color-hover

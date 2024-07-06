@@ -5,30 +5,57 @@
     <title>Navbar</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/navbar.css">
 </head>
 <body>
 
 <!-- resources/templates/fragments/nav.html -->
 <div th:fragment="navbar">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="#navbar">
+    <nav class="navbar navbar-dark shadow" id="#navbar">
         <div class="container">
-            <a class="navbar-brand" href="/">Meu Projeto</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/home}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/profile}">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/logout}">Logout</a>
-                    </li>
-                </ul>
+            <a class="navbar-brand fw-bold text-center" href="/">
+                Jornal IF
+            </a>
+            <form class="d-flex form-search">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="Pesquisar" aria-label="Pesquisar">
+                    <button class="btn btn-search" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="offcanvas offcanvas-start" id="navbarNav">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title">Menu</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Início</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/articles">Artigos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/categories">Categorias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/editions">Edições</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/perfil">Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>

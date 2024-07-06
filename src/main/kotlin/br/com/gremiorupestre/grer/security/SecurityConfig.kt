@@ -25,7 +25,7 @@
             http
                 .authorizeHttpRequests { authorizeRequests ->
                     authorizeRequests
-                        .requestMatchers("/", "/login", "/register", "/articles/", "/webjars/**", "/register/**", "login/**", "/error", "/logout").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/articles/", "/webjars/**", "/register/**", "login/**", "/error", "/logout", "/css/**", "/sass/**", "/img/**").permitAll()
                         .anyRequest().authenticated()
                 }
                 .formLogin { formLogin ->

@@ -1,0 +1,113 @@
+@import "styles"
+
+// General styles
+body
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: $background-color
+    font-size: 16px
+    color: $font-color
+    margin: 0
+    padding: 20px
+
+// Login form
+.form
+    background-color: $quaternary-color
+    border-radius: 15px
+    border-top: 5px solid $primary-color
+    border-bottom: 5px solid $primary-color
+    padding: 20px
+    max-width: 500px
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1)
+    text-align: center
+    .form-control
+        width: 100%
+        padding: 10px
+        margin: 10px 0
+        border: 1px solid $border-color
+        border-radius: 5px
+        box-sizing: border-box
+        &:focus
+            outline: none
+            border: 2px solid $primary-color
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1)
+            -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1)
+            -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1)
+    .btn
+        background-color: $primary-color
+        color: $quaternary-color
+        border: none
+        border-radius: 5px
+        padding: 10px
+        width: 100%
+        margin: 10px 0
+        cursor: pointer
+        &:hover
+            background-color: darken($primary-color, 10%)
+            color: $quaternary-color
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1))
+            -webkit-filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1))
+            -moz-filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1))
+    .error
+        color: red
+        font-size: 14px
+        margin: 10px 0
+
+.btn-guest
+    max-width: 280px
+    color: $font-color
+    border: none
+    border-radius: 5px
+    padding: 10px
+    width: 100%
+    margin: 10px 0
+    cursor: pointer
+    &:hover
+        background-color: darken($secondary-color, 10%)
+        color: $font-color
+        filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1))
+        -webkit-filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1))
+        -moz-filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1))
+
+// Logo
+.logo
+    width: 300px
+    height: 300px
+    display: block
+    margin: 0 auto
+    img
+        width: 100%
+        height: 100%
+        object-fit: cover
+
+.link
+    color: $primary-color
+    text-decoration: none
+    &:hover
+        text-decoration: underline
+
+.logo2
+    @extend .logo
+    width: 500px
+    height: 500px
+
+// Responsive
+@media (max-width: 768px)
+    .container
+        padding: 10px
+        height: 100%
+    .form
+        width: 100%
+        padding: 10px
+        .form-control
+            padding: 5px
+            margin: 5px 0
+        .btn
+            padding: 5px
+            margin: 5px 0
+        .error
+            font-size: 12px
+    .logo
+        width: 200px
+        height: 200px

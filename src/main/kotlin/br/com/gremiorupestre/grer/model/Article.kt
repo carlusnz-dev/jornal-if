@@ -15,6 +15,8 @@ data class Article(
     @field:NotNull
     val title : String = "",
     @field:NotNull
+    val subtitle : String = "",
+    @field:NotNull
     @Lob
     val content : String = "",
     @field:NotNull
