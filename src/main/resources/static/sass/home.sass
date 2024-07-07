@@ -44,6 +44,29 @@
         object-fit: cover
         aspect-ratio: 2/1
 
+.article-first-page
+  height: 50%
+
+.article-link
+  width: 100%
+  height: 100%
+  display: flex
+  flex-direction: column
+  background: url("https://placehold.co/200x500?text=null") center
+  background-size: cover
+
+
+  .card-title
+    color: $primary-color
+    font-weight: bold
+    font-size: 32px
+
+#CardFirstPage
+  height: 420px
+  width: 100%
+
+
+// Buttons and links
 .btn-about
   margin-top: 10px
   background-color: $primary-color
@@ -55,6 +78,8 @@
     filter: drop-shadow(0 0 0.75rem $link-color-hover)
     -webkit-filter: drop-shadow(0 0 0.75rem $link-color-hover)
     -moz-filter: drop-shadow(0 0 0.75rem $link-color-hover)
+
+// Content
 
 
 // Media queries
@@ -80,3 +105,6 @@
         img
           border-radius: 0
           aspect-ratio: 16/9
+
+  #CardFirstPage
+    height: 300px

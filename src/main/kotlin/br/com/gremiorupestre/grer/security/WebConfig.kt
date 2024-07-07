@@ -1,15 +1,20 @@
 package br.com.gremiorupestre.grer.security
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+import org.springframework.security.core.Authentication
 import org.springframework.web.servlet.LocaleResolver
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect
+import org.thymeleaf.spring6.SpringTemplateEngine
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver
 
 @Configuration
 @EnableWebMvc
@@ -33,6 +38,14 @@ class WebConfig : WebMvcConfigurer {
     @Bean
     fun resourceUrlEncodingFilter(): ResourceUrlEncodingFilter {
         return ResourceUrlEncodingFilter()
+    }
+
+    @Bean
+    fun templateEngine(templateResolver: SpringResourceTemplateResolver): SpringTemplateEngine {
+        val templateEngine = SpringTemplateEngine()
+        templateEngine.setTemplateResolver(templateResolver)
+        templateEngine.addDialect(SpringSecurityDialect())
+        return templateEngine
     }
 
 }

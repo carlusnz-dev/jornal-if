@@ -4,14 +4,11 @@ import br.com.gremiorupestre.grer.model.User
 import br.com.gremiorupestre.grer.repository.UserRepository
 import br.com.gremiorupestre.grer.security.SecurityConfig
 import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpSession
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Lazy
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.RememberMeServices
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,13 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping
 class LogUserController {
 
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
+    @Lazy
     @Autowired
-    lateinit var securityConfig: SecurityConfig
-
-    @Autowired
-    lateinit var rememberMeServices: PersistentTokenRepository
+    private lateinit var securityConfig: SecurityConfig
 
     // Get Mapping
     @GetMapping("/login")

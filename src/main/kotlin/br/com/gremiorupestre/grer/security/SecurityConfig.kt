@@ -1,7 +1,9 @@
     package br.com.gremiorupestre.grer.security
 
     import org.springframework.context.annotation.Bean
+    import org.springframework.context.annotation.ComponentScan
     import org.springframework.context.annotation.Configuration
+    import org.springframework.context.annotation.Lazy
     import org.springframework.context.annotation.Primary
     import org.springframework.security.config.annotation.web.builders.HttpSecurity
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -16,7 +18,11 @@
 
     @Configuration
     @EnableWebSecurity
-    class SecurityConfig(private val userDetailsService: UserDetailsService, private val dataSource: DataSource) {
+    @ComponentScan(basePackages = ["br.com.gremiorupestre.grer"])
+    class SecurityConfig(
+        @Lazy private val userDetailsService: UserDetailsService,
+        private val dataSource: DataSource
+    ) {
 
         @Primary
         @Bean
@@ -26,6 +32,8 @@
                 .authorizeHttpRequests { authorizeRequests ->
                     authorizeRequests
                         .requestMatchers("/", "/login", "/register", "/articles/", "/webjars/**", "/register/**", "login/**", "/error", "/logout", "/css/**", "/sass/**", "/img/**").permitAll()
+                        .requestMatchers("/**").hasAnyRole("USER", "ADMIN", "GUEST")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 }
                 .formLogin { formLogin ->

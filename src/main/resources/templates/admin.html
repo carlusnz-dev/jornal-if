@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jornal IF - ADMIN</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="fixed-top">
+
+    <div class="container-fluid bg-white p-0">
+        <p class="text-uppercase text-center text-muted fw-bold mb-0">
+            grêmio de representação estudantil rupestre - 2024
+        </p>
+        <a href="#" class="btn btn-primary w-100">Saiba mais</a>
+    </div>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+</div>
+
+
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

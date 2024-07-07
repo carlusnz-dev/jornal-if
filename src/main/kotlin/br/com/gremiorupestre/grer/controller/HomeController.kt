@@ -30,6 +30,11 @@ class HomeController {
 
         // User
         val user = session.getAttribute("userLoged") as User
+
+        if (user.roles.contains("ADMIN")) {
+            model.addAttribute("isAdmin", true)
+        }
+
         model.addAttribute("user", user)
 
         return "home"

@@ -131,6 +131,29 @@
   aspect-ratio: 2/1;
 }
 
+.article-first-page {
+  height: 50%;
+}
+
+.article-link {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: url("https://placehold.co/200x500?text=null") center;
+  background-size: cover;
+}
+.article-link .card-title {
+  color: #f26a2e;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+#CardFirstPage {
+  height: 420px;
+  width: 100%;
+}
+
 .btn-about {
   margin-top: 10px;
   background-color: #f26a2e;
@@ -172,6 +195,9 @@
   .article .card .card-img img {
     border-radius: 0;
     aspect-ratio: 16/9;
+  }
+  #CardFirstPage {
+    height: 300px;
   }
 }
 
