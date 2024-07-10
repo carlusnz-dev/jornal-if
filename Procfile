@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar grer.jar
+web: java -Dserver.port=$PORT -jar grer-0.0.1-SNAPSHOT.jar
