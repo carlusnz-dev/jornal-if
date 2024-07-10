@@ -39,6 +39,8 @@
                         .requestMatchers("/articles/new", "/articles/edit/", "/articles/update/", "/editions/**").hasRole("NEWS")
                         // Public resources
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**", "/uploads", "/uploads/**").permitAll()
+                        // For user authenticaded
+                        .requestMatchers("/reset-password/**","/forgot-password/**").permitAll()
                         // Any other request must be authenticated
                         .anyRequest().authenticated()
                 }
@@ -59,6 +61,10 @@
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()
+                }
+                .passwordManagement {
+                    it
+                        .changePasswordPage("/reset-password")
                 }
                 .rememberMe {
                     it
