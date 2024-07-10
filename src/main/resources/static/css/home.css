@@ -163,8 +163,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: url("https://placehold.co/200x500?text=null") center;
-  background-size: cover;
 }
 .article-link .card-title {
   color: #f26a2e;
