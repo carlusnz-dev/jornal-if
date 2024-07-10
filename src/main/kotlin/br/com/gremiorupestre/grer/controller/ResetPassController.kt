@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @Controller
 class ResetPassController {
@@ -22,22 +20,23 @@ class ResetPassController {
     private lateinit var resetService: PasswordResetService
 
     // GET Mapping
-    @GetMapping(value = ["/reset-password", "/reset-password={token}"])
-    fun returnResetPassPage(model: Model): String {
+    @GetMapping("/reset-password/{token}")
+    fun returnResetPassPage(
+        @PathVariable("token") token: String,
+        model: Model
+    ): String {
+        val getEmail = SecurityContextHolder.getContext().authentication.name
+        val user = userService.findByEmail(getEmail)
+        model.addAttribute("user", user)
 
-        if (SecurityContextHolder.getContext().authentication.name == null) {
-            return "redirect:/login?error"
-        } else {
-            val getEmail = SecurityContextHolder.getContext().authentication.name
-            val user = userService.findByEmail(getEmail)
-            model.addAttribute("user", user)
+        val resetToken = resetService.findByToken(token)
+
+        if (resetToken.isPresent && resetToken.get().isValid()) {
+            model.addAttribute("token", token)
+            return "reset-password"
         }
 
-        val user = User()
-        val resetToken = resetService.findByUserId(user.id)
-
-        model.addAttribute("token", resetToken)
-
+        model.addAttribute("error", "Token inválido ou expirado.")
         return "reset-password"
     }
 
@@ -49,12 +48,10 @@ class ResetPassController {
         @RequestParam("confirmPassword") confirmPassword: String,
         model: Model
     ): String {
-
         val passwordResetToken = resetService.findByToken(token)
 
-        if (passwordResetToken.isPresent) {
-            val resetToken = passwordResetToken.get()
-            val user = resetToken.user
+        if (passwordResetToken.isPresent && passwordResetToken.get().isValid()) {
+            val user = passwordResetToken.get().user
 
             if (newPassword == confirmPassword) {
                 user.password = newPassword
@@ -82,16 +79,14 @@ class ResetPassController {
         @RequestParam("email") email: String,
         model: Model
     ): String {
-
         val user = userService.findByEmail(email)
 
         if (user.isPresent) {
-            println("Token created: ${resetService.createPasswordResetTokenForUser(email)}")
-            return "redirect:/reset-password=${resetService.createPasswordResetTokenForUser(email)}"
+            val token = resetService.createPasswordResetTokenForUser(email)
+            return "redirect:/reset-password/$token"
         } else {
             model.addAttribute("error", "Usuário não encontrado.")
             return "redirect:/forgot-password?error"
         }
     }
-
 }

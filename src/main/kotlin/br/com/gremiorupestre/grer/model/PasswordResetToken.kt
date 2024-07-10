@@ -24,4 +24,8 @@ data class PasswordResetToken(
     @Temporal(TemporalType.TIMESTAMP)
     val expiryDate: LocalDateTime
 
-)
+) {
+    fun isValid(): Boolean {
+        return expiryDate.isAfter(LocalDateTime.now())
+    }
+}

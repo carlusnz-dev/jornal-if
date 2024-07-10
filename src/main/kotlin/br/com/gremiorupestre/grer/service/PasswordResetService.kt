@@ -7,7 +7,6 @@ import br.com.gremiorupestre.grer.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDateTime
 import java.util.*
 
@@ -24,30 +23,26 @@ class PasswordResetService {
     @Lazy
     private lateinit var mailService: MailService
 
-    fun createPasswordResetTokenForUser(
-        @RequestParam("email") email: String
-    ) : String {
-
-        val optionalUser : Optional<User> = userRepository.findByEmail(email)
-        val user = optionalUser.get()
-        println("User: $user")
+    fun createPasswordResetTokenForUser(email: String): String {
+        val optionalUser: Optional<User> = userRepository.findByEmail(email)
+        val user = optionalUser.orElseThrow { NoSuchElementException("Usuário não encontrado para o email: $email") }
 
         val token = UUID.randomUUID().toString()
         val expiryDate = LocalDateTime.now().plusMinutes(30)
 
-        val myToken = PasswordResetToken(
+        val passwordResetToken = PasswordResetToken(
             token = token,
             user = user,
             expiryDate = expiryDate
         )
-        passwordResetTokenRepository.save(myToken)
+        passwordResetTokenRepository.save(passwordResetToken)
 
         // Send email with token
         mailService.sendEmail(
             to = user.email,
             subject = "Reset Password",
-            text = "To reset your password, click the link below:\n\n" +
-                "http://localhost:8080/reset-password=${token}"
+            text = "Para redefinir sua senha, clique no link abaixo:\n\n" +
+                    "https://jornal.gremiorupestre.com.br/reset-password/$token"
         )
 
         return token
@@ -62,22 +57,12 @@ class PasswordResetService {
     }
 
     fun validatePasswordResetToken(token: String): String {
+        val passwordResetToken = passwordResetTokenRepository.findByToken(token)
 
-        val userID = userRepository.findByEmail(token).get().id
-        val passwordResetToken = passwordResetTokenRepository.findByUserId(userID)
-
-        if (passwordResetToken.isPresent) {
-            val resetToken = passwordResetToken.get()
-            val user = resetToken.user
-
-            if (resetToken.expiryDate.isBefore(LocalDateTime.now())) {
-                return "expired"
-            }
-
+        if (passwordResetToken.isPresent && passwordResetToken.get().isValid()) {
             return "valid"
         }
 
         return "invalid"
     }
-
 }
