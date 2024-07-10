@@ -47,7 +47,7 @@
                 .formLogin { formLogin ->
                     formLogin
                         .loginPage("/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
                         .failureUrl("/login?error")
                         .permitAll()
                 }
