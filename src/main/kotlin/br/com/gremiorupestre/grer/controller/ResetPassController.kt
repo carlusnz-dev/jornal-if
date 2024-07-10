@@ -24,10 +24,17 @@ class ResetPassController {
     // GET Mapping
     @GetMapping("/reset-password")
     fun returnResetPassPage(model: Model): String {
-        val auth = SecurityContextHolder.getContext().authentication
-        val username = auth.name
 
-        val resetToken = resetService.createPasswordResetTokenForUser(username)
+        if (SecurityContextHolder.getContext().authentication.name == null) {
+            return "redirect:/login?error"
+        } else {
+            val getEmail = SecurityContextHolder.getContext().authentication.name
+            val user = userService.findByEmail(getEmail)
+            model.addAttribute("user", user)
+        }
+
+        val user = User()
+        val resetToken = resetService.findByUserId(user.id)
 
         model.addAttribute("token", resetToken)
 
@@ -65,13 +72,7 @@ class ResetPassController {
 
     // GET Mapping
     @GetMapping("/forgot-password")
-    fun returnForgotPassPage(model: Model): String {
-
-        val getEmail = SecurityContextHolder.getContext().authentication.name
-        val user = userService.findByEmail(getEmail)
-
-        model.addAttribute("user", user)
-
+    fun returnForgotPassPage(): String {
         return "forgot-password"
     }
 
@@ -86,6 +87,7 @@ class ResetPassController {
 
         if (user.isPresent) {
             resetService.createPasswordResetTokenForUser(email)
+            println("Token created: ${resetService.createPasswordResetTokenForUser(email)}")
             return "redirect:/reset-password"
         } else {
             model.addAttribute("error", "Usuário não encontrado.")

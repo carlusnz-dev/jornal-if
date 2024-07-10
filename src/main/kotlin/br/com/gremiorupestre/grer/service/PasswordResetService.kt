@@ -30,6 +30,7 @@ class PasswordResetService {
 
         val optionalUser : Optional<User> = userRepository.findByEmail(email)
         val user = optionalUser.get()
+        println("User: $user")
 
         val token = UUID.randomUUID().toString()
         val expiryDate = LocalDateTime.now().plusMinutes(30)
@@ -46,25 +47,37 @@ class PasswordResetService {
             to = user.email,
             subject = "Reset Password",
             text = "To reset your password, click the link below:\n\n" +
-                "http://localhost:8080/reset-password?${token}"
+                "http://localhost:8080/reset-password=${token}"
         )
 
         return token
     }
 
-    fun findByToken(token: String) = passwordResetTokenRepository.findByToken(token)
+    fun findByUserId(userId: UUID?): Optional<PasswordResetToken> {
+        return passwordResetTokenRepository.findByUserId(userId)
+    }
+
+    fun findByToken(token: String): Optional<PasswordResetToken> {
+        return passwordResetTokenRepository.findByToken(token)
+    }
 
     fun validatePasswordResetToken(token: String): String {
-        val passwordResetToken : Optional<PasswordResetToken> = passwordResetTokenRepository.findByToken(token)
-        return if (passwordResetToken.isPresent) {
-            if (passwordResetToken.get().expiryDate.isBefore(LocalDateTime.now())) {
-                "expired"
-            } else {
-                "valid"
+
+        val userID = userRepository.findByEmail(token).get().id
+        val passwordResetToken = passwordResetTokenRepository.findByUserId(userID)
+
+        if (passwordResetToken.isPresent) {
+            val resetToken = passwordResetToken.get()
+            val user = resetToken.user
+
+            if (resetToken.expiryDate.isBefore(LocalDateTime.now())) {
+                return "expired"
             }
-        } else {
-            "invalid"
+
+            return "valid"
         }
+
+        return "invalid"
     }
 
 }
