@@ -72,7 +72,7 @@ class ArticleController {
     fun showNewArticleForm(model: Model): String {
         model.addAttribute("article", Article())
         model.addAttribute("categories", categoryService.findAll())
-        model.addAttribute("editions", articleService.findAll())
+        model.addAttribute("editions", editionService.findAll())
         return "articles/article-new"
     }
 
