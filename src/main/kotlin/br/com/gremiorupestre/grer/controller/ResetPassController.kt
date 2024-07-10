@@ -22,7 +22,7 @@ class ResetPassController {
     private lateinit var resetService: PasswordResetService
 
     // GET Mapping
-    @GetMapping("/reset-password")
+    @GetMapping(value = ["/reset-password", "/reset-password={token}"])
     fun returnResetPassPage(model: Model): String {
 
         if (SecurityContextHolder.getContext().authentication.name == null) {
@@ -86,9 +86,8 @@ class ResetPassController {
         val user = userService.findByEmail(email)
 
         if (user.isPresent) {
-            resetService.createPasswordResetTokenForUser(email)
             println("Token created: ${resetService.createPasswordResetTokenForUser(email)}")
-            return "redirect:/reset-password"
+            return "redirect:/reset-password=${resetService.createPasswordResetTokenForUser(email)}"
         } else {
             model.addAttribute("error", "Usuário não encontrado.")
             return "redirect:/forgot-password?error"
