@@ -8,6 +8,7 @@ $primary-color-vary: #e77c10
 $secondary-color: #f7f7f7
 $tertiary-color: #333
 $quaternary-color: #fff
+$quinary-color: #e0e0e0
 $border-color: #dbdbdb
 $background-color: #f7f7f7
 $font-color: #333
@@ -17,6 +18,10 @@ $link-color: #f26a2e
 $link-color-hover: #bf5323
 $link-secondary-color: #2561e1
 $link-secondary-color-hover: #1a4d9b
+
+// Colors
+$color-white: #fff
+$color-black: #000
 
 // Navbar
 $navbar-bg: $primary-color
@@ -51,6 +56,37 @@ $scrollbar-thumb-hover: $primary-color-dark
 
 *::-webkit-scrollbar-thumb:hover
   background: $scrollbar-thumb-hover
+
+// Button
+$btn-bg: $primary-color
+$btn-bg-hover: $primary-color-dark
+$btn-bg-active: $primary-color-vary
+$btn-bg-disabled: $border-color
+$btn-text-color: $quaternary-color
+$btn-text-color-hover: $quinary-color
+$btn-text-color-active: $quaternary-color
+
+.btn-primary
+  background-color: $btn-bg
+  color: $btn-text-color
+  border: none
+  filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1))
+  -webkit-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1))
+  -o-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1))
+  -moz-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1))
+  transition: all 0.3s
+  &:hover
+    background-color: $btn-bg-hover
+    color: $btn-text-color-hover
+    filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2))
+    -webkit-filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2))
+    -o-filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2))
+    -moz-filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2))
+  &:active
+    background-color: $btn-bg-active
+    color: $btn-text-color-active
+
+
 
 // Background
 .bg-login

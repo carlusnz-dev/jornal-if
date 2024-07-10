@@ -1,14 +1,8 @@
 package br.com.gremiorupestre.grer.model
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinTable
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
+import java.time.LocalDateTime
 
 @Entity
 data class Edition(
@@ -20,6 +14,15 @@ data class Edition(
     @Column(unique = true)
     @field:NotNull
     val name : String = "",
+    @field:NotNull
+    val number : Int = 0,
+    @field:NotNull
+    val description : String = "",
+    @field:NotNull
+    var imageUrl : String = "",
+
+    @Temporal(TemporalType.TIMESTAMP)
+    var date : LocalDateTime = LocalDateTime.now(),
 
     @ManyToMany(mappedBy = "editions")
     val articles : MutableSet<Article> = mutableSetOf()

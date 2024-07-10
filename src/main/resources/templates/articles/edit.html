@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Jornal IF - ' + ${article.getTitle()}"></title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/article/detail.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+
+<!-- advertisement and navbar -->
+<div class="fixed-top" id="header">
+
+    <div class="container-fluid bg-white p-0">
+        <p class="text-uppercase text-center text-muted fw-bold mb-0">
+            grêmio de representação estudantil rupestre - 2024
+        </p>
+    </div>
+
+    <!-- Admin -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                Você está logado como administrador
+            </p>
+        </div>
+    </div>
+
+    <!-- News Editor -->
+    <div sec:authorize="hasRole('ROLE_NEWS')">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                Você está logado como editor de notícias.
+            </p>
+        </div>
+    </div>
+
+    <!-- Not logged -->
+    <div sec:authorize="!isAuthenticated()" class="d-none d-md-block">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                <strong>Você não possui uma conta.</strong>
+                Faça <a href="/login" class="text-decoration-none">login</a> ou <a href="/register"
+                                                                                   class="text-decoration-none">cadastre-se</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+</div>
+
+<!-- Main Content -->
+<div class="container" style="min-height: 100vh; margin-top: 8rem">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center">Editar Notícia</h1>
+            <form th:action="@{/articles/update/{id}(id=${article.getId()})}" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Título</label>
+                    <input type="text" class="form-control" id="title" name="title" th:value="${article.getTitle()}">
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Conteúdo</label>
+                    <textarea class="form-control" id="content" name="content" rows="10"
+                              th:text="${article.getContent()}"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="author" class="form-label">Autor</label>
+                    <input type="text" class="form-control" id="author" name="author" th:value="${article.getAuthor()}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Categoria</label>
+                    <select class="form-select" id="category" name="category">
+                        <option th:each="category : ${categories}"
+                                th:value="${category.getId()}"
+                                th:text="${category.getName()}"
+                                th:selected="${category.getId() == article.getCategory().getId()}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Imagem</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                </div>
+                <div class="mb-3">
+                    <label for="edition" class="form-label">Edição</label>
+                    <select th:each="edition : ${editions}" id="edition" name="edition" th:id="'edition-' + ${edition.id}"
+                            th:selected="${article.editions.contains(edition)}"
+                            th:value="${edition.id}" class="form-control">
+                        <option th:text="${edition.name}"></option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

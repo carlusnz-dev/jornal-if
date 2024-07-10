@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jornal IF - Perfil</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Profile -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="display-4">Perfil</h1>
+            <hr>
+        </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Informações do Usuário <strong th:text="${user.name}"></strong></h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

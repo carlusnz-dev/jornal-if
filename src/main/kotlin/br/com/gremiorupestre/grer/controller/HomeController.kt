@@ -2,8 +2,10 @@ package br.com.gremiorupestre.grer.controller
 
 import br.com.gremiorupestre.grer.model.User
 import br.com.gremiorupestre.grer.service.ArticleService
+import br.com.gremiorupestre.grer.service.UserService
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,28 +16,20 @@ class HomeController {
     @Autowired
     private lateinit var articleService: ArticleService
 
+    @Autowired
+    private lateinit var userService: UserService
+
     @GetMapping("/")
-    fun home(model: Model, httpServletRequest: HttpServletRequest): String {
+    fun home(model: Model): String {
 
-        // Session
-        val session = httpServletRequest.session
-
-        if (session.getAttribute("userLoged") == null) {
-            return "redirect:/login?errorNotLogged"
+        val auth = SecurityContextHolder.getContext().authentication
+        if (auth.principal is User) {
+            val user = auth.principal as User
+            model.addAttribute("user", userService.findById(user.id!!).get())
         }
 
-        // Articles
-        val articles = articleService.findAll()
+        val articles = articleService.findAllByOrderByDateCreatedDesc()
         model.addAttribute("articles", articles)
-
-        // User
-        val user = session.getAttribute("userLoged") as User
-
-        if (user.roles.contains("ADMIN")) {
-            model.addAttribute("isAdmin", true)
-        }
-
-        model.addAttribute("user", user)
 
         return "home"
     }

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Jornal IF - ' + ${article.title}"></title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/article/detail.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+
+<!-- advertisement and navbar -->
+<div class="fixed-top" id="header">
+
+    <div class="container-fluid bg-white p-0">
+        <p class="text-uppercase text-center text-muted fw-bold mb-0">
+            grêmio de representação estudantil rupestre - 2024
+        </p>
+    </div>
+
+    <!-- Admin -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                Você está logado como administrador
+            </p>
+        </div>
+    </div>
+
+    <!-- News Editor -->
+    <div sec:authorize="hasRole('ROLE_NEWS')">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                Você está logado como editor de notícias.
+            </p>
+        </div>
+    </div>
+
+    <!-- Not logged -->
+    <div sec:authorize="!isAuthenticated()" class="d-none d-md-block">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                <strong>Você não possui uma conta.</strong>
+                Faça <a href="/login" class="text-decoration-none">login</a> ou <a href="/register" class="text-decoration-none">cadastre-se</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+</div>
+
+<!-- Main Content -->
+<div class="container bg-light p-3" style="margin-top: 8em;">
+
+    <!-- Article -->
+
+    <div class="row">
+        <div class="col-md-12 article-header">
+            <img class="img" th:src="${article.getImageUrl()}" alt="Imagem do artigo">
+            <p class="text-muted text-center" th:text="${article.getCategory().name}"></p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+
+        <!-- Article Title -->
+        <div class="col-md-12 mb-3 article-title-header">
+            <h1 class="text-center article-title" th:text="${article.title}"></h1>
+            <h3 class="text-center article-subtitle" th:text="${article.subtitle}"></h3>
+        </div>
+
+        <!-- Article Info -->
+        <div class="col-12 article-info">
+            <div class="text-center text-muted">
+                <i class="bi bi-eye"></i> <span th:text="${article.views}"></span>
+                <i class="bi bi-person"></i> <span th:text="${article.author}"></span>
+                <span class="mx-2">|</span>
+                <i class="bi bi-calendar"></i> <span th:text="${#temporals.format(article.dateCreated, 'dd/MM/yyyy')}"></span>
+            </div>
+        </div>
+
+        <!-- Article Content -->
+        <div class="col-md-12 mt-5 article-content">
+            <p class="lead" th:utext="${article.content}"></p>
+        </div>
+
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4 mx-auto mt-3 mt-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Compartilhe</h5>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a th:href="${shareUrlWhatsApp}" target="_blank" class="btn btn-success border-0 rounded-pill shadow-sm">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <a th:href="${shareUrlFacebook}" target="_blank" class="btn btn-primary bg-primary border-0 rounded-pill shadow-sm">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a th:href="${shareUrlTwitter}" target="_blank" class="btn btn-info border-0 rounded-pill shadow-sm">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

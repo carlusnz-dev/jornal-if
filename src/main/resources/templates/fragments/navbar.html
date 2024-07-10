@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
@@ -22,12 +22,36 @@
                 Jornal IF
             </a>
             <form class="d-flex form-search">
-                <div class="input-group">
+
+                <!-- Search input for md screens-->
+                <div class="input-group d-none d-sm-flex">
                     <input type="search" class="form-control" placeholder="Pesquisar" aria-label="Pesquisar">
                     <button class="btn btn-search" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
+
+                <!-- Search input for sm screens-->
+                <div class="input-group d-block d-sm-none">
+                    <!-- offcanvas search -->
+                    <button class="btn btn-search rounded-pill" type="button" data-bs-toggle="offcanvas" data-bs-target="#searchNav"
+                            aria-controls="searchNav">
+                        <a href="/articles/search" class="text-decoration-none text-white">
+                            <i class="bi bi-search"></i>
+                        </a>
+                    </button>
+                    <div class="offcanvas offcanvas-end" id="searchNav">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title">Pesquisar</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <input type="search" class="form-control" placeholder="O que você procura?" aria-label="Pesquisar">
+                        </div>
+                    </div>
+                </div>
+
             </form>
             <div class="offcanvas offcanvas-start" id="navbarNav">
                 <div class="offcanvas-header">
@@ -42,14 +66,78 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/articles">Artigos</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/categories">Categorias</a>
+
+                        <!-- Articles for ROLE_NEWS -->
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') and isAuthenticated()">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Artigos
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li>
+                                        <a class="dropdown-item" href="/articles/new">Novo Artigo</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/articles">Listar Artigos</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="/editions">Edições</a>
+
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Categorias
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" th:each="category : ${categories}">
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{'/categories/' + ${category.id}}" th:text="${category.name}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </li>
+
+                        <!-- Editions for ROLE_NEWS -->
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') and isAuthenticated()">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Edições
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li>
+                                        <a class="dropdown-item" href="/editions/new">Nova Edição</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/editions">Listar Edições</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <!-- List editions -->
                         <li class="nav-item">
-                            <a class="nav-link" href="/perfil">Perfil</a>
+
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Edições
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" th:each="edition : ${editions}">
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{'/editions/' + ${edition.id}}" th:text="${edition.name}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">Perfil</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>

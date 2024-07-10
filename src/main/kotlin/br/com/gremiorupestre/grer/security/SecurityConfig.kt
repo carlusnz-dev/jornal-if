@@ -5,11 +5,12 @@
     import org.springframework.context.annotation.Configuration
     import org.springframework.context.annotation.Lazy
     import org.springframework.context.annotation.Primary
+    import org.springframework.security.authentication.AuthenticationManager
+    import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
     import org.springframework.security.config.annotation.web.builders.HttpSecurity
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
     import org.springframework.security.core.userdetails.UserDetailsService
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-    import org.springframework.security.crypto.password.PasswordEncoder
     import org.springframework.security.web.SecurityFilterChain
     import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl
     import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices
@@ -26,14 +27,19 @@
 
         @Primary
         @Bean
-        @Throws(Exception::class)
         fun securityFilterChain(http : HttpSecurity) : SecurityFilterChain {
-            http
+            http.csrf { it.disable() }
                 .authorizeHttpRequests { authorizeRequests ->
                     authorizeRequests
-                        .requestMatchers("/", "/login", "/register", "/articles/", "/webjars/**", "/register/**", "login/**", "/error", "/logout", "/css/**", "/sass/**", "/img/**").permitAll()
-                        .requestMatchers("/**").hasAnyRole("USER", "ADMIN", "GUEST")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Public pages
+                        .requestMatchers("/", "/login", "/register/**", "/articles", "/articles/{id}", "/navbar/**", "/editions", "/editions/{id}", "/editions/{id}/articles").permitAll()
+                        // Private pages for admin
+                        .requestMatchers("/admin", "/articles/**", "/editions/**").hasRole("ADMIN")
+                        // Private pages for news in articles
+                        .requestMatchers("/articles/new", "/articles/edit/", "/articles/update/", "/editions/**").hasRole("NEWS")
+                        // Public resources
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**", "/uploads", "/uploads/**").permitAll()
+                        // Any other request must be authenticated
                         .anyRequest().authenticated()
                 }
                 .formLogin { formLogin ->
@@ -66,9 +72,7 @@
         }
 
         @Bean
-        fun passwordEncoder() : PasswordEncoder {
-            return BCryptPasswordEncoder()
-        }
+        fun passwordEncoder() = BCryptPasswordEncoder()
 
         @Bean
         fun rememberMeServices(): PersistentTokenBasedRememberMeServices {
@@ -80,6 +84,11 @@
             val tokenRepository = JdbcTokenRepositoryImpl()
             tokenRepository.setDataSource(dataSource)
             return tokenRepository
+        }
+
+        @Bean
+        fun authenticationManager(configuration: AuthenticationConfiguration) : AuthenticationManager {
+            return configuration.authenticationManager
         }
 
     }

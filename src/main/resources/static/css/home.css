@@ -33,6 +33,29 @@
   background: #bf5323;
 }
 
+.btn-primary {
+  background-color: #f26a2e;
+  color: #fff;
+  border: none;
+  filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1));
+  -webkit-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1));
+  -o-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1));
+  -moz-filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.1));
+  transition: all 0.3s;
+}
+.btn-primary:hover {
+  background-color: #bf5323;
+  color: #e0e0e0;
+  filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2));
+  -webkit-filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2));
+  -o-filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2));
+  -moz-filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 0.2));
+}
+.btn-primary:active {
+  background-color: #e77c10;
+  color: #fff;
+}
+
 .bg-login, .bg-register {
   background: linear-gradient(270deg, #e13230, #ee7c20, #e4c04f);
   background-size: 600% 600%;

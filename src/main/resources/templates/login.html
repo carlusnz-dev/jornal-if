@@ -15,9 +15,6 @@
     <div th:if="${param.error}" class="alert alert-danger mt-3" role="alert">
         Usuário ou senha inválidos!
     </div>
-    <div th:if="${param.errorNotLogged}" class="alert alert-danger mt-3" role="alert">
-        Faça login para acessar a página!
-    </div>
 
     <div class="bg-white px-3 py-1 rounded-3 shadow-lg">
         <!-- logo -->
@@ -26,14 +23,14 @@
         </div>
         <!-- Formulário de login -->
         <h1 class="text-center fw-bold mb-3">Entre</h1>
-        <form th:action="@{/login/user}" th:object="${user}" method="post" class="form mx-auto">
+        <form th:action="@{/login}" method="post" class="form mx-auto">
             <div class="mb-3">
                 <label for="username" class="form-label">Nome de usuário</label>
-                <input type="text" class="form-control" id="username" name="username" th:field="*{username}" autofocus required>
+                <input type="text" class="form-control" id="username" name="username" autofocus required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Senha</label>
-                <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+                <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
@@ -43,9 +40,9 @@
         </form>
         <p class="mt-3 text-center">Não possui uma conta ainda? <a href="/register" class="link">Crie agora</a></p>
         <!-- Guest login -->
-        <form th:action="@{/login/guest}" method="post" class="mt-3 d-flex justify-content-center align-items-center mx-auto">
-            <button type="submit" class="btn-guest">Entrar como convidado</button>
-        </form>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="/" class="btn btn-light rounded-pill shadow-sm">Entrar como convidado</a>
+        </div>
     </div>
 
 </div>

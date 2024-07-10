@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Jornal IF - ' + ${edition.name} + 'Editar'"></title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+</head>
+<body>
+
+<!-- advertisement and navbar -->
+<div class="fixed-top" id="header">
+
+    <div class="container-fluid bg-white p-0">
+        <p class="text-uppercase text-center text-muted fw-bold mb-0">
+            grêmio de representação estudantil rupestre - 2024
+        </p>
+    </div>
+
+    <!-- Admin -->
+    <div class="container-fluid bg-light p-0">
+        <p sec:authorize="hasRole('ROLE_ADMIN')" class="text-uppercase text-center text-muted fw-bold mb-0">
+            Você está logado como administrador
+        </p>
+    </div>
+
+    <!-- News Editor -->
+    <div sec:authorize="hasRole('ROLE_NEWS')">
+        <div class="container-fluid bg-light p-0">
+            <p class="text-uppercase text-center text-muted fw-bold mb-0">
+                Você está logado como editor de notícias.
+            </p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+</div>
+
+<!-- Main content -->
+<div class="container" style="margin-top: 8rem; min-height: 100vh">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Editar Edição</h1>
+            <form th:action="@{/editions/update/{id}(id=${edition.id})}" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="name" name="name" th:value="${edition.name}">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" th:text="${edition.description}"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

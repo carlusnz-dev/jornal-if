@@ -29,11 +29,11 @@ data class User(
     @JsonIgnore
     var password : String = "",
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "roles", joinColumns = [JoinColumn(name = "user_id")])
-    @Column(name = "role")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    val roles : MutableSet<String> = mutableSetOf(),
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.MERGE])
+    @JoinTable(name = "user_roles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id")])
+    var roles: List<Role> = mutableListOf(),
 
     @Column(unique = true)
     @field:NotNull

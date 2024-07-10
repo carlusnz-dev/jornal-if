@@ -1,5 +1,3 @@
-package br.com.gremiorupestre.grer.rest
-
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.web.bind.annotation.GetMapping
@@ -14,12 +12,13 @@ import javax.imageio.ImageIO
 @RestController
 class ImageRestController {
 
-    private var UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads"
+private var UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/uploads"
 
     @GetMapping(value = ["/uploads/{imageName}"])
     fun downloadImage(@PathVariable imageName: String): Resource? {
 
         val image: ByteArray? = toByteArray(ImageIO.read(File("${UPLOAD_DIRECTORY}/${imageName}")))
+        println("Image: ${image?.size} and ${image?.contentToString()}")
 
         return image?.let { ByteArrayResource(it) }
     }
@@ -42,6 +41,5 @@ class ImageRestController {
 
         return null
     }
-
 
 }

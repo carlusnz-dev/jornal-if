@@ -1,6 +1,8 @@
 package br.com.gremiorupestre.grer.controller
 
+import br.com.gremiorupestre.grer.model.User
 import br.com.gremiorupestre.grer.service.ArticleService
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpSession
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -14,15 +16,11 @@ class AdminController {
     lateinit var articleService: ArticleService
 
     @GetMapping("/admin")
-    fun admin(model: Model, session: HttpSession): String {
+    fun admin(request: HttpServletRequest): String {
 
-        if (session.getAttribute("userLoged") == null) {
-            return "redirect:/login?errorNotLogged"
-        }
-
-        if (session.getAttribute("isAdmin") == null) {
-            return "redirect:/?errorNotAdmin"
-        }
+        // get user role
+        val userName = request.userPrincipal.name
+        val user = request.session.getAttribute(userName)
 
         return "admin"
     }

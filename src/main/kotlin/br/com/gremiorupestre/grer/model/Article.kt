@@ -2,6 +2,7 @@ package br.com.gremiorupestre.grer.model
 
 import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
+import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
 
 @Entity
@@ -18,14 +19,18 @@ data class Article(
     val subtitle : String = "",
     @field:NotNull
     @Lob
+    @Column(length = 6454)
     val content : String = "",
     @field:NotNull
-    val imageUrl : String = "",
+    var imageUrl : String = "",
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @field:NotNull
-    val user : User = User(),
+    var user : User = User(),
+
+    @field:NotNull
+    var author : String = "",
 
     @Temporal(TemporalType.TIMESTAMP)
     var dateCreated : LocalDateTime = LocalDateTime.now(),
@@ -33,7 +38,7 @@ data class Article(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @field:NotNull
-    val category : Category = Category(),
+    var category : Category = Category(),
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -52,7 +57,14 @@ data class Article(
         joinColumns = [JoinColumn(name = "article_id")],
         inverseJoinColumns = [JoinColumn(name = "edition_id")]
     )
-    val editions : MutableSet<Edition> = mutableSetOf()
+    val editions : MutableSet<Edition> = mutableSetOf(),
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinTable(
+        name = "article_view",
+        joinColumns = [JoinColumn(name = "article_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_id")]
+    )
+    val views : MutableSet<User> = mutableSetOf()
 
 )
