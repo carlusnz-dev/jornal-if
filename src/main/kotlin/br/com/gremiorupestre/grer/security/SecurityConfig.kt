@@ -47,10 +47,9 @@
                 .formLogin { formLogin ->
                     formLogin
                         .loginPage("/login")
-                        .loginProcessingUrl("/login")
                         .successForwardUrl("/")
-                        .successHandler { _, response, _ -> response.sendRedirect("/") }
                         .defaultSuccessUrl("/")
+                        .failureForwardUrl("/login?error")
                         .failureUrl("/login?error")
                         .permitAll()
                 }
