@@ -38,7 +38,7 @@
                         // Private pages for news in articles
                         .requestMatchers("/articles/new", "/articles/edit/", "/articles/update/", "/editions/**").hasRole("NEWS")
                         // Public resources
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**", "/uploads", "/uploads/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**", "/uploads/**").permitAll()
                         // For user authenticaded
                         .requestMatchers("/reset-password/**","/forgot-password/**").permitAll()
                         // Any other request must be authenticated
@@ -47,9 +47,7 @@
                 .formLogin { formLogin ->
                     formLogin
                         .loginPage("/login")
-                        .successForwardUrl("/")
                         .defaultSuccessUrl("/")
-                        .failureForwardUrl("/login?error")
                         .failureUrl("/login?error")
                         .permitAll()
                 }
@@ -58,7 +56,6 @@
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
                         .permitAll()
                 }
                 .passwordManagement {
