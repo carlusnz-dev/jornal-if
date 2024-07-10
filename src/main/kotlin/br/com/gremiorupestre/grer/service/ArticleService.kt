@@ -54,10 +54,7 @@ class ArticleService {
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetail = authentication.principal as UserDetailsImpl
         val user = userService.findById(userDetail.getId()!!)
-
-        if (user.isEmpty) {
-            throw Exception("User not found with ID: ${userDetail.getId()}")
-        }
+            ?: throw Exception("User not found with ID: ${userDetail.getId()}")
 
         article.user = user.get()
         article.author = user.get().name
