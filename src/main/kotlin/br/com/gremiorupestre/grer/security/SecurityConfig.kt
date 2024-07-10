@@ -32,7 +32,7 @@
                 .authorizeHttpRequests { authorizeRequests ->
                     authorizeRequests
                         // Public pages
-                        .requestMatchers("/", "/login", "/register/**", "/articles", "/articles/{id}", "/navbar/**", "/editions", "/editions/{id}", "/editions/{id}/articles").permitAll()
+                        .requestMatchers("/", "/login", "/logout", "/register/**", "/articles", "/articles/{id}", "/navbar/**", "/editions", "/editions/{id}", "/editions/{id}/articles").permitAll()
                         // Private pages for admin
                         .requestMatchers("/admin", "/articles/**", "/editions/**").hasRole("ADMIN")
                         // Private pages for news in articles
@@ -45,6 +45,9 @@
                 .formLogin { formLogin ->
                     formLogin
                         .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successForwardUrl("/")
+                        .successHandler { _, response, _ -> response.sendRedirect("/") }
                         .defaultSuccessUrl("/")
                         .failureUrl("/login?error")
                         .permitAll()
