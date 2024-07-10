@@ -1,0 +1,14 @@
+@font-face {
+  font-face-name: "Ink Free";
+  font-family: "Ink Free";
+  definition-src: url("static/fonts/Inkfree.ttf");
+  font-weight: normal;
+}
+@font-face {
+  font-face-name: "StretchPro";
+  font-family: "StretchPro";
+  definition-src: url("static/fonts/StretchPro.otf");
+  font-weight: auto;
+}
+
+/*# sourceMappingURL=fonts.css.map */
