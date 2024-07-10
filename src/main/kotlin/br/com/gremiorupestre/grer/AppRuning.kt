@@ -22,8 +22,8 @@ class AppRunning : ApplicationRunner {
     private lateinit var categoryRepository: CategoryRepository
 
     override fun run(args: ApplicationArguments?) {
-        //createRoles()
-        //createCategory()
+        createRoles()
+        createCategory()
     }
 
     fun createRoles(){
@@ -50,6 +50,10 @@ class AppRunning : ApplicationRunner {
             Category(name = "Extensão", description = "Extensão do IFPI Campus São Raimundo Nonato"),
             Category(name = "Estágios", description = "Estágios do IFPI Campus São Raimundo Nonato")
         )
+
+        if (categoryRepository.findAll().isNotEmpty()){
+            return
+        }
 
         categoryRepository.saveAll(categories)
     }
