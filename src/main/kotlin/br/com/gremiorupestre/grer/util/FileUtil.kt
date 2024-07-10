@@ -18,7 +18,8 @@ class FileUtil {
         // Variables
         val fileNames = StringBuilder()
         val fileName = "${LocalDateTime.now().toString().replace(":","-")}${file.originalFilename}"
-        val fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName)
+        val sanitizedFileName = fileName.replace(Regex("[^A-Za-z0-9_.-]"), "")
+        val fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, sanitizedFileName)
 
         // Save file
         fileNames.append(fileName)
