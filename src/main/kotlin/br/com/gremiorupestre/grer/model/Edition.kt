@@ -24,7 +24,7 @@ data class Edition(
     @Temporal(TemporalType.TIMESTAMP)
     var date : LocalDateTime = LocalDateTime.now(),
 
-    @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY, mappedBy = "articles")
+    @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY, mappedBy = "edition")
     @JoinColumn(
         name = "edition_id",
         referencedColumnName = "id"
