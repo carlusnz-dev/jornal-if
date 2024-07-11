@@ -22,7 +22,7 @@ class FirebaseConfig {
     lateinit var storageBucket: String
 
     @Bean
-    fun initializeFirebase() {
+    fun initializeFirebase() : FirebaseApp {
         val resource = resourceLoader.getResource(privateKey)
 
         val options = FirebaseOptions.builder()
@@ -30,6 +30,6 @@ class FirebaseConfig {
             .setStorageBucket(storageBucket)
             .build()
 
-        FirebaseApp.initializeApp(options)
+        return FirebaseApp.initializeApp(options)
     }
 }
