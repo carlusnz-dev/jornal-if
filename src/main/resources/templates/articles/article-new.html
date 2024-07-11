@@ -104,7 +104,7 @@
         <!-- Edition -->
         <div class="mb-3">
             <label for="edition" class="form-label">Edição</label>
-            <select class="form-select" id="edition" name="edition" th:field="*{editions}" required>
+            <select class="form-select" id="edition" name="edition" th:field="*{edition}" required>
                 <option th:each="edition : ${editions}" th:value="${edition.id}" th:text="${edition.name}">Edition</option>
             </select>
         </div>
