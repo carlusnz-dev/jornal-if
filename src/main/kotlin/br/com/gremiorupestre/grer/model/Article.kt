@@ -21,6 +21,7 @@ data class Article(
     @Lob
     @Column(length = 6454)
     val content : String = "",
+    @Column(columnDefinition = "TEXT")
     @field:NotNull
     var imageUrl : String = "",
 

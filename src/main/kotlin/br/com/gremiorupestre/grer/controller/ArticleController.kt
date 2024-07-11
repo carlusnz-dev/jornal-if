@@ -94,7 +94,7 @@ class ArticleController {
             throw IllegalArgumentException("Falha ao salvar a imagem. O caminho da imagem está vazio.")
         }
 
-        article.imageUrl = imagePath
+        article.imageUrl = "https://firebasestorage.googleapis.com/v0/b/jornal-if-61544.appspot.com/o/$imagePath?alt=media"
         article.author = article.user.name
         articleService.save(article)
         return "redirect:/articles"

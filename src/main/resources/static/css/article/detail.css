@@ -165,4 +165,11 @@
   text-align: justify;
 }
 
+@media (max-width: 768px) {
+  .img {
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+}
+
 /*# sourceMappingURL=detail.css.map */
