@@ -11,12 +11,12 @@ data class View(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id : Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "user_id")
     @field:NotNull
     val user : User = User(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "article_id")
     @field:NotNull
     val article : Article? = Article(),

@@ -51,10 +51,10 @@ class ArticleController {
             }
 
             // Share URLs
-            val getUrl = "http://localhost:8080/articles/${article.get().id}"
+            val getUrl = "https://jornal.gremiorupestre.com.br/articles/${article.get().id}"
             val shareUrlWhatsApp = "https://wa.me/?text=Jornal%20IF%20Gremio%20Rupestre%20-%20${article.get().title}%20${getUrl}"
             val shareUrlFacebook = "https://www.facebook.com/sharer/sharer.php?u=${getUrl}"
-            val shareUrlTwitter = "https://twitter.com/intent/tweet?url=${getUrl}&text=Jornal%20IF%20Gremio%20Rupestre%20-%20${article.get().title}"
+            val shareUrlTwitter = "https://twitter.com/intent/tweet?url=${getUrl}&text=Jornal%20IF%20Gremio%20Rupestre%20-%20Confira%20a%20matéria%20${article.get().title}"
             model.addAttribute("shareUrlWhatsApp", shareUrlWhatsApp)
             model.addAttribute("shareUrlFacebook", shareUrlFacebook)
             model.addAttribute("shareUrlTwitter", shareUrlTwitter)

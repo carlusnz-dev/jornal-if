@@ -81,7 +81,7 @@
         <!-- Article Info -->
         <div class="col-12 article-info">
             <div class="text-center text-muted">
-                <i class="bi bi-eye"></i> <span th:text="${article.views}"></span>
+                <i class="bi bi-eye"></i> <span th:text="${article.views.size()}"></span>
                 <i class="bi bi-person"></i> <span th:text="${article.author}"></span>
                 <span class="mx-2">|</span>
                 <i class="bi bi-calendar"></i> <span th:text="${#temporals.format(article.dateCreated, 'dd/MM/yyyy')}"></span>
