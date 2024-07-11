@@ -94,7 +94,7 @@
                 <div class="mb-3">
                     <label for="edition" class="form-label">Edição</label>
                     <select th:each="edition : ${editions}" id="edition" name="edition" th:id="'edition-' + ${edition.id}"
-                            th:selected="${article.editions.contains(edition)}"
+                            th:selected="${article.edition.id == edition.id}"
                             th:value="${edition.id}" class="form-control">
                         <option th:text="${edition.name}"></option>
                     </select>

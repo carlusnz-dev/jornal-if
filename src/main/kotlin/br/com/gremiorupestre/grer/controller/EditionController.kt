@@ -33,11 +33,10 @@ class EditionController {
         val editionOptional = editionService.findById(id)
         if (editionOptional.isPresent) {
             val edition = editionOptional.get()
-            val editions = edition // Cria um conjunto com a edição encontrada
 
             // Passa o conjunto de edições para o serviço de artigos
             model.addAttribute("edition", edition)
-            model.addAttribute("articles", articleService.findAllByEditionsAndId(editions, id))
+            model.addAttribute("articles", articleService.findAllByEditionsAndId(edition, id))
             return "edition/view"
         }
         return "redirect:/editions"
