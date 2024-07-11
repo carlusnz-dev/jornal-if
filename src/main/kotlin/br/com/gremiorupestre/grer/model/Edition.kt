@@ -24,7 +24,7 @@ data class Edition(
     @Temporal(TemporalType.TIMESTAMP)
     var date : LocalDateTime = LocalDateTime.now(),
 
-    @ManyToMany(mappedBy = "editions")
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "edition")
     val articles : MutableSet<Article> = mutableSetOf()
 
 )

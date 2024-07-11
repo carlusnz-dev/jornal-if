@@ -29,14 +29,14 @@ class ArticleService {
     }
 
     fun findAllByEditionsAndId(
-        editions: MutableSet<Edition>,
+        editions: Edition,
         id: Long
     ): List<Article> {
-        return articleRepository.findAllByEditionsAndId(editions, id)
+        return articleRepository.findAllByEditionAndId(editions, id)
     }
 
-    fun findAllByEditions(editions: MutableSet<Edition>): List<Article> {
-        return articleRepository.findAllByEditions(editions)
+    fun findAllByEditions(editions: Edition): List<Article> {
+        return articleRepository.findAllByEdition(editions)
     }
 
     fun findById(id: Long): Optional<Article> {
@@ -73,7 +73,7 @@ class ArticleService {
                 content = updatedArticle.content,
                 user = updatedArticle.user,
                 category = updatedArticle.category,
-                editions = updatedArticle.editions,
+                edition = updatedArticle.edition,
                 tags = updatedArticle.tags,
                 comments = updatedArticle.comments
             )

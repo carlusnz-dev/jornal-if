@@ -35,8 +35,11 @@ data class Article(
     @Temporal(TemporalType.TIMESTAMP)
     var dateCreated : LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(
+        name = "category_id",
+        referencedColumnName = "id"
+    )
     @field:NotNull
     var category : Category = Category(),
 
@@ -51,13 +54,13 @@ data class Article(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "article")
     val comments : MutableSet<Comment> = mutableSetOf(),
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "article_edition",
-        joinColumns = [JoinColumn(name = "article_id")],
-        inverseJoinColumns = [JoinColumn(name = "edition_id")]
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(
+        name = "edition_id",
+        referencedColumnName = "id"
     )
-    val editions : MutableSet<Edition> = mutableSetOf(),
+    @field:NotNull
+    var edition : Edition,
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinTable(
