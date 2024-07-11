@@ -87,9 +87,12 @@ class ArticleController {
         val user = userService.findById(userDetail.getId()!!).get()
         article.user = user
 
-        val fileUtil = FileUtil.create()
-        val imagePath = fileUtil.saveFile(image)
+        val edition = article.edition.id?.let { editionService.findById(it).orElseThrow { Exception("Edição não encontrada") } }
+        if (edition != null) {
+            article.edition = edition
+        }
 
+        val imagePath = FileUtil().saveFile(image)
         if (imagePath.isEmpty()) {
             throw IllegalArgumentException("Falha ao salvar a imagem. O caminho da imagem está vazio.")
         }
