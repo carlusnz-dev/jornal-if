@@ -13,7 +13,7 @@ class FileUtil {
     private val storage: Storage = StorageOptions.getDefaultInstance().service
 
     @Value("\${bucket.name}")
-    private lateinit var bucketName: String
+    lateinit var bucketName: String
 
     companion object {
         fun create(): FileUtil = FileUtil()
