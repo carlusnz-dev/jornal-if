@@ -93,10 +93,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="edition" class="form-label">Edição</label>
-                    <select th:each="edition : ${editions}" id="edition" name="edition" th:id="'edition-' + ${edition.id}"
-                            th:selected="${article.edition.id == edition.id}"
-                            th:value="${edition.id}" class="form-control">
-                        <option th:text="${edition.name}"></option>
+                    <select class="form-select" id="edition" name="edition">
+                        <option th:each="edition : ${editions}"
+                                th:value="${edition.getId()}"
+                                th:text="${edition.getName()}"
+                                th:selected="${edition.getId() == article.getEdition().getId()}"></option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Salvar</button>
