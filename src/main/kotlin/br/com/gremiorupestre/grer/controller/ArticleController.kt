@@ -30,6 +30,9 @@ class ArticleController {
     @Autowired
     lateinit var userService: UserService
 
+    @Autowired
+    lateinit var fileUtil: FileUtil
+
     @GetMapping
     fun listArticles(model: Model): String {
         model.addAttribute("articles", articleService.findAll())
@@ -82,7 +85,11 @@ class ArticleController {
         @RequestParam("image") image: MultipartFile
         ): String {
 
-        val fileUtil = FileUtil.create()
+        val authentication = SecurityContextHolder.getContext().authentication
+        val userDetail = authentication.principal as UserDetailsImpl
+        val user = userService.findById(userDetail.getId()!!).get()
+        article.user = user
+
         val imagePath = fileUtil.saveFile(image)
 
         if (imagePath.isEmpty()) {

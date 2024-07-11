@@ -11,6 +11,10 @@ class FileUtil @Autowired constructor(
     private val firebaseStorageService: FirebaseStorageService
 ) {
 
+    fun create(file: MultipartFile): String {
+        return saveFile(file)
+    }
+
     fun saveFile(file: MultipartFile): String {
         val fileName = "${LocalDateTime.now().toString().replace(":", "-")}${file.originalFilename}"
         val sanitizedFileName = fileName.replace(Regex("[^A-Za-z0-9_.-]"), "")
