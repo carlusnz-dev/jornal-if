@@ -60,7 +60,7 @@ data class Article(
         referencedColumnName = "id"
     )
     @field:NotNull
-    var edition : Edition,
+    var edition : Edition = Edition(),
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinTable(
