@@ -33,7 +33,7 @@ class EditionController {
         val editionOptional = editionService.findById(id)
         if (editionOptional.isPresent) {
             val edition = editionOptional.get()
-            val editions = mutableSetOf(edition) // Cria um conjunto com a edição encontrada
+            val editions = edition // Cria um conjunto com a edição encontrada
 
             // Passa o conjunto de edições para o serviço de artigos
             model.addAttribute("edition", edition)
@@ -78,7 +78,7 @@ class EditionController {
     ) : String {
         val edition = editionService.findById(id)
         if (edition.isPresent) {
-            val editions = mutableSetOf(edition.get())
+            val editions = edition.get()
             model.addAttribute("edition", edition.get())
             model.addAttribute("articles", articleService.findAllByEditions(editions))
             return "edition/articles"
