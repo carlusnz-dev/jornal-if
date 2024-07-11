@@ -74,7 +74,7 @@
     <div class="row mt-3">
         <div class="col-md-12">
             <div class="list-group list-group-flush">
-                <a th:each="article : ${edition.articles}" th:href="@{/editions/}" class="list-group-item list-group-item-action">
+                <a th:each="article : ${edition.articles}" th:href="@{/articles/{id}(id=${article.id})}" class="list-group item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1" th:text="${article.title}"></h5>
                         <small th:text="${#temporals.format(article.dateCreated, 'dd/MM/yyyy')}" class="text-muted"></small>

@@ -15,12 +15,12 @@ data class Comment(
     @field:NotNull
     val content : String = "",
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(name = "user_id")
     @field:NotNull
     val user : User = User(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(name = "article_id")
     @field:NotNull
     val article : Article = Article(),

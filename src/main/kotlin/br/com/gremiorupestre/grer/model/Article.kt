@@ -36,7 +36,7 @@ data class Article(
     @Temporal(TemporalType.TIMESTAMP)
     var dateCreated : LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(
         name = "category_id",
         referencedColumnName = "id"
@@ -44,7 +44,7 @@ data class Article(
     @field:NotNull
     var category : Category = Category(),
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "article_tags",
         joinColumns = [JoinColumn(name = "article_id")],
@@ -55,7 +55,7 @@ data class Article(
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "article")
     val comments : MutableSet<Comment> = mutableSetOf(),
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(
         name = "edition_id",
         referencedColumnName = "id"
@@ -63,7 +63,7 @@ data class Article(
     @field:NotNull
     var edition : Edition = Edition(),
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "article_view",
         joinColumns = [JoinColumn(name = "article_id")],

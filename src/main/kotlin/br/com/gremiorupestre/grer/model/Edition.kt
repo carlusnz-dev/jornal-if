@@ -24,7 +24,12 @@ data class Edition(
     @Temporal(TemporalType.TIMESTAMP)
     var date : LocalDateTime = LocalDateTime.now(),
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "edition")
+    @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY, mappedBy = "articles")
+    @JoinColumn(
+        name = "edition_id",
+        referencedColumnName = "id"
+    )
+    @field:NotNull
     val articles : MutableSet<Article> = mutableSetOf()
 
 )

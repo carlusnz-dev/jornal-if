@@ -35,7 +35,9 @@ class ArticleService {
         return articleRepository.findAllByEditionAndId(editions, id)
     }
 
-    fun findAllByEditions(editions: Edition): List<Article> {
+    fun findAllByEditions(
+        editions: Edition
+    ): List<Article> {
         return articleRepository.findAllByEdition(editions)
     }
 

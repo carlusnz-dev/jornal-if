@@ -95,10 +95,10 @@
 
                     <a class="article-link text-decoration-none rounded-3" th:href="@{/articles/{id}(id=${articles[1].id})}">
                         <div class="card-img"
-                             th:style="'background-image: url(' + ${articles[1].imageUrl} + ');'">
+                             th:style="'background-image: url(' + ${articles[1].imageUrl} + ') cover center;'">
                             <div class="card-body">
                                 <p class="text-muted fw-bold" th:text="${articles[1].category.getName()}"></p>
-                                <h3 class="card-title text-start" th:text="${articles[1].subtitle}"></h3>
+                                <h3 class="card-title text-start" th:text="${articles[1].title}"></h3>
                             </div>
                         </div>
                     </a>
@@ -112,7 +112,7 @@
                              th:style="'background-image: url(' + ${articles[2].imageUrl} + ');'">
                             <div class="card-body">
                                 <p class="text-muted fw-bold" th:text="${articles[2].category.getName()}"></p>
-                                <h3 class="card-title text-start" th:text="${articles[2].subtitle}"></h3>
+                                <h3 class="card-title text-start" th:text="${articles[2].title}"></h3>
                             </div>
                         </div>
                     </a>
@@ -141,7 +141,7 @@
                 <!-- Article Card -->
                 <div class="row">
                     <div class="col-lg-8 article" id="articleContainer">
-                        <div class="card mb-3" th:each="article, iterStart : ${articles}" th:if="${iterStart.index > 2}">
+                        <div class="card mb-3" th:each="article, iterStart : ${articles}" th:if="${iterStart.index} > 2">
                             <div class="card-img" id="articleImage">
                                 <img th:src="@{${article.imageUrl}}" class="img-fluid rounded-3" alt="Imagem do artigo">
                             </div>
