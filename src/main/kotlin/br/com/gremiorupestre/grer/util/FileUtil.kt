@@ -1,18 +1,22 @@
 package br.com.gremiorupestre.grer.util
 
-import br.com.gremiorupestre.grer.service.FirebaseStorageService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
-@Component
-class FileUtil @Autowired constructor(
-    private val firebaseStorageService: FirebaseStorageService
-) {
+class FileUtil {
 
-    fun create(file: MultipartFile): String {
-        return saveFile(file)
+    private val storage: Storage = StorageOptions.getDefaultInstance().service
+
+    @Value("\${bucket.name}")
+    private lateinit var bucketName: String
+
+    companion object {
+        fun create(): FileUtil = FileUtil()
     }
 
     fun saveFile(file: MultipartFile): String {
@@ -23,10 +27,13 @@ class FileUtil @Autowired constructor(
             throw IllegalArgumentException("File name after sanitization is empty or invalid")
         }
 
+        val blobId = BlobId.of(bucketName, sanitizedFileName)
+        val blobInfo = BlobInfo.newBuilder(blobId).build()
+
         try {
-            val fileUrl = firebaseStorageService.uploadFile(file, sanitizedFileName)
-            println("File saved in Firebase: $fileUrl")
-            return fileUrl
+            storage.create(blobInfo, file.bytes)
+            println("File saved in Firebase: gs://$bucketName/$sanitizedFileName")
+            return sanitizedFileName
         } catch (e: Exception) {
             println("Failed to save file: ${e.message}")
             throw RuntimeException("Could not save file. Please try again!", e)

@@ -30,9 +30,6 @@ class ArticleController {
     @Autowired
     lateinit var userService: UserService
 
-    @Autowired
-    lateinit var fileUtil: FileUtil
-
     @GetMapping
     fun listArticles(model: Model): String {
         model.addAttribute("articles", articleService.findAll())
@@ -90,6 +87,7 @@ class ArticleController {
         val user = userService.findById(userDetail.getId()!!).get()
         article.user = user
 
+        val fileUtil = FileUtil.create()
         val imagePath = fileUtil.saveFile(image)
 
         if (imagePath.isEmpty()) {
