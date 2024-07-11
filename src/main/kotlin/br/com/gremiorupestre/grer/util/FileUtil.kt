@@ -12,7 +12,8 @@ class FileUtil {
 
     private val storage: Storage = StorageOptions.getDefaultInstance().service
 
-    private var bucketName: String = "jornal-if-61544.appspot.com"
+    @Value("\${bucket.name}")
+    lateinit var bucketName: String
 
     companion object {
         fun create(): FileUtil = FileUtil()
