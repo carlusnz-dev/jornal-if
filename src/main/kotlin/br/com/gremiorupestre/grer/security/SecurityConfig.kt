@@ -15,6 +15,7 @@
     import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl
     import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices
     import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository
+    import org.springframework.security.web.util.matcher.AntPathRequestMatcher
     import javax.sql.DataSource
 
     @Configuration
@@ -54,6 +55,7 @@
                 .logout { logout ->
                     logout
                         .logoutUrl("/logout")
+                        .logoutRequestMatcher(AntPathRequestMatcher("/logout", "GET"))
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
                         .permitAll()
