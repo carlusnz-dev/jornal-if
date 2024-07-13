@@ -1,40 +1,40 @@
-package br.com.gremiorupestre.grer.config
-
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.io.ResourceLoader
+import java.io.IOException
 import javax.annotation.PostConstruct
 
 @Configuration
-class FirebaseInitializer() {
-
-    @Autowired
-    lateinit var resourceLoader: ResourceLoader
+class FirebaseConfig {
 
     @Value("\${firebase.private.key}")
-    lateinit var privateKeyPath: String
+    private lateinit var firebasePrivateKey: String
 
     @Value("\${bucket.name}")
-    lateinit var bucketName: String
+    private lateinit var bucketName: String
 
-    @PostConstruct
-    fun initialize() {
+    @Bean
+    fun firebaseApp(): FirebaseApp {
+        return FirebaseApp.getInstance()
+    }
 
-        val resource = resourceLoader.getResource(privateKeyPath)
-
-        val options = FirebaseOptions.builder()
-            .setCredentials(GoogleCredentials.fromStream(resource.inputStream))
+    @Bean
+    fun firebaseOptions(): FirebaseOptions {
+        return FirebaseOptions.builder()
+            .setCredentials(GoogleCredentials.fromStream(firebasePrivateKey.byteInputStream()))
             .setStorageBucket(bucketName)
             .build()
+    }
 
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseApp.initializeApp(options)
-            println("Firebase initialized with storage bucket: $bucketName")
-            println("Firebase initialized with private key: $privateKeyPath")
+    @PostConstruct
+    fun init() {
+        try {
+            FirebaseApp.initializeApp(firebaseOptions())
+        } catch (e: IOException) {
+            throw RuntimeException("Could not initialize Firebase", e)
         }
     }
 }

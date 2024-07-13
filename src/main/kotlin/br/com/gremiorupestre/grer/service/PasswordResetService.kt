@@ -65,4 +65,8 @@ class PasswordResetService {
 
         return "invalid"
     }
+
+    fun deletePasswordResetToken(token: String) {
+        passwordResetTokenRepository.deleteByToken(token)
+    }
 }

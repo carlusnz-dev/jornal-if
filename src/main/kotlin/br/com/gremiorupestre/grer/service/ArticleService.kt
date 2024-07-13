@@ -7,6 +7,7 @@ import br.com.gremiorupestre.grer.model.View
 import br.com.gremiorupestre.grer.repository.ArticleRepository
 import br.com.gremiorupestre.grer.repository.ViewRepository
 import br.com.gremiorupestre.grer.security.userdetails.UserDetailsImpl
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -82,9 +83,15 @@ class ArticleService {
         }
     }
 
+    @Transactional
     fun trackView(article: Article, user: User) {
-        val articleView = View(article = article, user = user)
+        val existingArticle = articleRepository.findById(article.id!!).orElseThrow { IllegalArgumentException("Article not found with ID ${article.id}") }
+
+        val articleView = View(article = existingArticle, user = user)
         vi.save(articleView)
+
+        existingArticle.views.add(articleView)
+        articleRepository.save(existingArticle)
     }
 
     fun searchByTitle(title: String): List<Article> {

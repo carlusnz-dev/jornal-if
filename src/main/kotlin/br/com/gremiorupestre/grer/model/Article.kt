@@ -63,12 +63,8 @@ data class Article(
     @field:NotNull
     var edition : Edition = Edition(),
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
-    @JoinTable(
-        name = "article_view",
-        joinColumns = [JoinColumn(name = "article_id")],
-        inverseJoinColumns = [JoinColumn(name = "user_id")]
-    )
-    val views : MutableSet<User> = mutableSetOf()
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "article")
+    @field:NotNull
+    val views : MutableSet<View> = mutableSetOf()
 
 )

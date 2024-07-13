@@ -15,88 +15,57 @@
 <div th:fragment="navbar">
     <nav class="navbar navbar-dark shadow" id="#navbar">
         <div class="container">
+
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- page home -->
-            <a class="navbar-brand text-center fw-bold" href="/" th:if="${currentUrl == '/'}">
-                <img src="/img/logo.svg" alt="Logo" width="70" height="70" class="d-inline-block align-text-top">
+            <a class="navbar-brand text-center mx-auto" href="/">
+                <span class="fw-bold text-uppercase">Jornal IF</span>
             </a>
 
-            <!-- page articles -->
-            <a class="navbar-brand text-center fw-bold" href="/articles" th:if="${currentUrl == '/articles'}">
-                <img src="/img/logo.svg" alt="Logo" width="70" height="70" class="d-inline-block align-text-top">
-                <span class="d-none d-sm-inline">- Artigos</span>
-            </a>
-
-            <!-- page categories -->
-            <a class="navbar-brand text-center fw-bold" href="/categories" th:if="${currentUrl == '/categories'}">
-                <img src="/img/logo.svg" alt="Logo" width="70" height="70" class="d-inline-block align-text-top">
-                <span class="d-none d-sm-inline">- Categorias</span>
-            </a>
-
-            <!-- page editions -->
-            <a class="navbar-brand text-center fw-bold" href="/editions" th:if="${currentUrl == '/editions'}">
-                <img src="/img/logo.svg" alt="Logo" width="70" height="70" class="d-inline-block align-text-top">
-                <span class="d-none d-sm-inline">- Edições</span>
-            </a>
-
-            <form class="d-flex form-search" th:action="@{/articles/search}" method="get">
-
-                <!-- Search input for md screens-->
+            <!-- Search form for desktop -->
+            <form class="d-sm-flex d-none form-search" th:action="@{/articles/search}" method="get" th:if="${currentUrl != '/articles/search'}">
                 <div class="input-group d-none d-sm-flex position-relative">
-                    <input type="search" class="form-control" placeholder="Pesquisar" name="query"
-                           id="searchInputDesktop"
-                           aria-label="Pesquisar" aria-describedby="searchSuggestionsDesktop"
-                           oninput="updateSuggestions(this.value)">
+                    <input type="search" class="form-control" placeholder="Pesquisar" name="q" id="searchInputDesktop"
+                           aria-label="Pesquisar" aria-describedby="searchSuggestionsDesktop">
                     <button class="btn btn-search" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
-                    <!-- Search suggestions for md screens -->
-                    <div id="searchSuggestionsDesktop" class="search-suggestions d-none d-sm-block"
-                         style="
-                            position: absolute;
-                            width: 100%;
-                            top: 100%;
-                            left: 0;
-                            right: 0;
-                            background-color: #fff;
-                            border: 1px solid #ccc;
-                            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-                            border-top: none;
-                            z-index: 1000;
-                            display: none;"
-                    ></div>
                 </div>
-
-                <!-- Search input for sm screens-->
-                <div class="input-group d-block d-sm-none">
-                    <!-- offcanvas search -->
-                    <button class="btn btn-search rounded-pill" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#searchNav"
-                            aria-controls="searchNav">
-                        <i class="bi bi-search"></i>
-                    </button>
-                    <div class="offcanvas offcanvas-end" id="searchNav">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title">Pesquisar</h5>
-                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                                    aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <input type="search" class="form-control" placeholder="O que você procura?"
-                                   name="query" oninput="updateSuggestions(this.value)" aria-label="Pesquisar" aria-describedby="searchSuggestionsMobile">
-                        </div>
-                    </div>
-                </div>
-
             </form>
 
-            <!-- Search suggestions for sm screens -->
-            <div id="searchSuggestionsMobile" class="search-suggestions d-block d-sm-none"></div>
+            <!-- Search form for mobile -->
+            <div class="d-block d-sm-none">
+                <!-- Button offcanvas -->
+                <button class="btn btn-light rounded-pill" type="button" data-bs-toggle="offcanvas" data-bs-target="#searchOffcanvas"
+                        aria-controls="searchOffcanvas">
+                    <i class="bi bi-search"></i>
+                </button>
+                <!-- Offcanvas search -->
+                <div class="offcanvas offcanvas-end" id="searchOffcanvas">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title">Pesquisar</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <form th:action="@{/articles/search}" method="get">
+                            <div class="input-group">
+                                <input type="search" class="form-control" placeholder="Pesquisar" name="q" id="searchInputMobile"
+                                       aria-label="Pesquisar" aria-describedby="searchSuggestionsMobile">
+                                <button class="btn btn-search" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Navbar links -->
             <div class="offcanvas offcanvas-start" id="navbarNav">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title">Menu</h5>
@@ -137,9 +106,8 @@
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Categorias
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink"
-                                    th:each="category : ${categories}">
-                                    <li>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li th:each="category : ${categories}">
                                         <a class="dropdown-item" th:href="@{'/categories/' + ${category.id}}"
                                            th:text="${category.name}"></a>
                                     </li>
@@ -175,9 +143,8 @@
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     Edições
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink"
-                                    th:each="edition : ${editions}">
-                                    <li>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li th:each="edition : ${editions}">
                                         <a class="dropdown-item" th:href="@{'/editions/' + ${edition.id}}"
                                            th:text="${edition.name}"></a>
                                     </li>
@@ -195,6 +162,7 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </nav>
 </div>
@@ -202,35 +170,5 @@
 <!-- Bootstrap JS -->
 <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
-<!-- Custom JS -->
-<script>
-    // navbar.js
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInputDesktop = document.getElementById('searchInputDesktop');
-        const searchInputMobile = document.getElementById('searchInputMobile');
-        const searchSuggestionsDesktop = document.getElementById('searchSuggestionsDesktop');
-        const searchSuggestionsMobile = document.getElementById('searchSuggestionsMobile');
-
-        function updateSuggestions(query) {
-            fetch(`/articles/search/?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    searchSuggestionsDesktop.innerHTML = '';
-                    searchSuggestionsMobile.innerHTML = '';
-
-                    data.forEach(suggestion => {
-                        const suggestionElement = document.createElement('a');
-                        suggestionElement.classList.add('search-suggestion');
-                        suggestionElement.href = `/articles/search?query=${suggestion}`;
-                        suggestionElement.textContent = suggestion;
-
-                        searchSuggestionsDesktop.appendChild(suggestionElement.cloneNode(true));
-                        searchSuggestionsMobile.appendChild(suggestionElement.cloneNode(true));
-                    });
-                });
-        }
-    })
-</script>
 </body>
 </html>

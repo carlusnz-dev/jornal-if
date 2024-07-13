@@ -82,6 +82,25 @@ class ResetPassController {
         val user = userService.findByEmail(email)
 
         if (user.isPresent) {
+
+            // Verify if the token is already in the database
+            val tokenExists = resetService.findByUserId(user.get().id).isPresent
+            if (tokenExists) {
+                model.addAttribute("error", "Token já enviado.")
+                return "redirect:/forgot-password?error"
+            }
+
+            // Verify if the token is expired
+            val tokenExpired = resetService.findByUserId(user.get().id).isPresent
+            if (tokenExpired) {
+                model.addAttribute("error", "Token expirado.")
+
+                // Delete the token from the database
+                resetService.deletePasswordResetToken(token = resetService.findByUserId(user.get().id).get().token)
+
+                return "redirect:/forgot-password?error"
+            }
+
             val token = resetService.createPasswordResetTokenForUser(email)
             return "redirect:/reset-password/$token"
         } else {

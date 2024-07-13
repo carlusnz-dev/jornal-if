@@ -14,4 +14,6 @@ interface PasswordResetTokenRepository : JpaRepository<PasswordResetToken, Long>
 
     fun findByToken(token: String): Optional<PasswordResetToken>
 
+    fun deleteByToken(token: String)
+
 }

@@ -53,6 +53,10 @@ class ArticleController {
                 articleService.trackView(articleOptional, user)
             }
 
+            // Count views
+            val views = articleOptional.views.size
+            model.addAttribute("views", views)
+
             // Share URLs
             val getUrl = "https://jornal.gremiorupestre.com.br/articles/${article.get().id}"
             val shareUrlWhatsApp = "https://wa.me/?text=Jornal%20IF%20Gremio%20Rupestre%20-%20${article.get().title}%20${getUrl}"
@@ -155,8 +159,17 @@ class ArticleController {
     }
 
     @GetMapping("/search")
-    fun searchArticle(@RequestParam("q") query: String, model: Model): String {
-        model.addAttribute("articles", articleService.searchByTitle(query))
+    fun searchArticle(@RequestParam("q") query: String?, model: Model): String {
+        if (!query.isNullOrBlank()) {
+            model.addAttribute("articles", articleService.searchByTitle(query))
+        }
+
+        if (query.isNullOrBlank()) {
+            model.addAttribute("errorList", "Digite algo para pesquisar")
+            return "articles/list?errorList"
+        }
+
         return "articles/list"
     }
+
 }
