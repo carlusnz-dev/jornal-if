@@ -109,6 +109,16 @@
     background-position: 0 50%;
   }
 }
+#MainContent {
+  min-height: 100vh;
+  margin-top: 8rem;
+}
+@media (max-width: 768px) {
+  #MainContent {
+    margin-top: 9rem;
+  }
+}
+
 .logo-title {
   width: 300px;
   height: 300px;
@@ -156,6 +166,7 @@
 
 .article-first-page {
   height: 50%;
+  width: 100%;
 }
 
 .article-link {
@@ -165,7 +176,6 @@
   flex-direction: column;
 }
 .article-link .card-title {
-  color: #f26a2e;
   font-weight: bold;
   font-size: 32px;
 }

@@ -55,7 +55,7 @@
 </div>
 
 <!-- Title -->
-<header style="margin-top: 7em">
+<header style="margin-top: 10rem">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -93,12 +93,12 @@
 
                 <div class="article-first-page row mb-1" th:if="${not #lists.isEmpty(articles)}">
 
-                    <a class="article-link text-decoration-none rounded-3" th:href="@{/articles/{id}(id=${articles[1].id})}">
-                        <div class="card-img"
-                             th:style="'background-image: url(' + ${articles[1].imageUrl} + ') cover center;'">
+                    <a class="article-link text-decoration-none p-3 rounded-5" th:href="@{/articles/{id}(id=${articles[1].id})}">
+                        <div class="card-img bg-dark-subtle bg-opacity-25"
+                             th:style="'background: url(' + ${articles[1].imageUrl} + '); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100%; border-radius: 15px; padding: 10px;'">
                             <div class="card-body">
                                 <p class="text-muted fw-bold" th:text="${articles[1].category.getName()}"></p>
-                                <h3 class="card-title text-start" th:text="${articles[1].title}"></h3>
+                                <h3 class="card-title text-dark px-3 py-1 bg-white rounded-pill shadow text-start" th:text="${articles[2].title}"></h3>
                             </div>
                         </div>
                     </a>
@@ -107,12 +107,12 @@
 
                 <div class="article-first-page row" th:if="${not #lists.isEmpty(articles)}">
 
-                    <a class="article-link text-decoration-none rounded-3" th:href="@{/articles/{id}(id=${articles[2].id})}">
+                    <a class="article-link text-decoration-none p-3 rounded-5" th:href="@{/articles/{id}(id=${articles[2].id})}">
                         <div class="card-img"
-                             th:style="'background-image: url(' + ${articles[2].imageUrl} + ');'">
+                             th:style="'background: url(' + ${articles[2].imageUrl} + '); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100%; border-radius: 15px; padding: 10px;'">
                             <div class="card-body">
                                 <p class="text-muted fw-bold" th:text="${articles[2].category.getName()}"></p>
-                                <h3 class="card-title text-start" th:text="${articles[2].title}"></h3>
+                                <h3 class="card-title text-dark px-3 py-1 bg-white rounded-pill shadow text-start" th:text="${articles[2].title}"></h3>
                             </div>
                         </div>
                     </a>

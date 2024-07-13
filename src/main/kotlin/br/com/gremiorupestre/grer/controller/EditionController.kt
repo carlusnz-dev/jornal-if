@@ -33,9 +33,8 @@ class EditionController {
         val editionOptional = editionService.findById(id)
         if (editionOptional.isPresent) {
             val edition = editionOptional.get()
-            // Passa o conjunto de edições para o serviço de artigos
             model.addAttribute("edition", edition)
-            model.addAttribute("articles", articleService.findAllByEditionsAndId(edition, id))
+            model.addAttribute("articles", articleService.findAllByEditions(edition))
             return "edition/view"
         }
         return "redirect:/editions"
@@ -66,21 +65,6 @@ class EditionController {
         model: Model,
     ) : String {
         editionService.deleteById(id)
-        return "redirect:/editions"
-    }
-
-    @GetMapping(value = ["/{id}/articles"])
-    fun listArticles(
-        @PathVariable id: Long,
-        model: Model,
-    ) : String {
-        val edition = editionService.findById(id)
-        if (edition.isPresent) {
-            val editions = edition.get()
-            model.addAttribute("edition", edition.get())
-            model.addAttribute("articles", articleService.findAllByEditions(editions))
-            return "edition/articles"
-        }
         return "redirect:/editions"
     }
 

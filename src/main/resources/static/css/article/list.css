@@ -109,6 +109,16 @@
     background-position: 0 50%;
   }
 }
+#MainContent {
+  min-height: 100vh;
+  margin-top: 8rem;
+}
+@media (max-width: 768px) {
+  #MainContent {
+    margin-top: 9rem;
+  }
+}
+
 .card {
   margin-bottom: 20px;
   border-radius: 15px 15px 0 0;

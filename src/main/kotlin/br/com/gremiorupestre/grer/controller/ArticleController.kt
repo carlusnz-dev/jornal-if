@@ -30,6 +30,9 @@ class ArticleController {
     @Autowired
     lateinit var userService: UserService
 
+    @Autowired
+    lateinit var fileUtil: FileUtil
+
     @GetMapping
     fun listArticles(model: Model): String {
         model.addAttribute("articles", articleService.findAll())
@@ -92,7 +95,8 @@ class ArticleController {
             article.edition = edition
         }
 
-        val imagePath = FileUtil().saveFile(image)
+        val imagePath = fileUtil.saveFile(image)
+
         if (imagePath.isEmpty()) {
             throw IllegalArgumentException("Falha ao salvar a imagem. O caminho da imagem está vazio.")
         }
@@ -130,6 +134,11 @@ class ArticleController {
         val userDetail = authentication.principal as UserDetailsImpl
         val user = userService.findById(userDetail.getId()!!).get()
         updatedArticle.user = user
+
+        val edition = updatedArticle.edition.id?.let { editionService.findById(it).orElseThrow { Exception("Edição não encontrada") } }
+        if (edition != null) {
+            updatedArticle.edition = edition
+        }
 
         if (updatedArticle.author.isEmpty()) {
             updatedArticle.author = user.name

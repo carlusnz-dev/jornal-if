@@ -1,28 +1,24 @@
 package br.com.gremiorupestre.grer.util
 
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.ClassPathResource
+import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import java.io.FileInputStream
 import java.time.LocalDateTime
 
+@Component
 class FileUtil {
 
-    private val storage: Storage
-    private val bucketName: String
+    private val storage: Storage = StorageOptions.getDefaultInstance().service
 
-    init {
-        val credentialsPath = "classpath:google-services.json"
-        val credentials = GoogleCredentials.fromStream(ClassPathResource(credentialsPath).inputStream)
-        storage = StorageOptions.newBuilder().setCredentials(credentials).build().service
+    @Value("\${bucket.name}")
+    lateinit var bucketName: String
 
-        // Bucket name from application properties or environment variable
-        bucketName = "jornal-if-61544.appspot.com"
+    companion object {
+        fun create(): FileUtil = FileUtil()
     }
 
     fun saveFile(file: MultipartFile): String {

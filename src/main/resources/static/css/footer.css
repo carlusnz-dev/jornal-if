@@ -109,6 +109,16 @@
     background-position: 0 50%;
   }
 }
+#MainContent {
+  min-height: 100vh;
+  margin-top: 8rem;
+}
+@media (max-width: 768px) {
+  #MainContent {
+    margin-top: 9rem;
+  }
+}
+
 footer {
   background-color: #f26a2e;
   color: white;

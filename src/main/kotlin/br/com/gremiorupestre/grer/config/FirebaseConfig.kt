@@ -5,31 +5,36 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ResourceLoader
+import javax.annotation.PostConstruct
 
 @Configuration
-class FirebaseConfig {
+class FirebaseInitializer() {
 
     @Autowired
     lateinit var resourceLoader: ResourceLoader
 
     @Value("\${firebase.private.key}")
-    lateinit var privateKey: String
+    lateinit var privateKeyPath: String
 
     @Value("\${bucket.name}")
-    lateinit var storageBucket: String
+    lateinit var bucketName: String
 
-    @Bean
-    fun initializeFirebase() : FirebaseApp {
-        val resource = resourceLoader.getResource(privateKey)
+    @PostConstruct
+    fun initialize() {
+
+        val resource = resourceLoader.getResource(privateKeyPath)
 
         val options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.fromStream(resource.inputStream))
-            .setStorageBucket(storageBucket)
+            .setStorageBucket(bucketName)
             .build()
 
-        return FirebaseApp.initializeApp(options)
+        if (FirebaseApp.getApps().isEmpty()) {
+            FirebaseApp.initializeApp(options)
+            println("Firebase initialized with storage bucket: $bucketName")
+            println("Firebase initialized with private key: $privateKeyPath")
+        }
     }
 }

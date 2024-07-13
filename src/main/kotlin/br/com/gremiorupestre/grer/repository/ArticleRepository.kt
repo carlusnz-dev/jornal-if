@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @EnableJpaRepositories
 interface ArticleRepository : JpaRepository<Article, Long> {
 
-    fun findAllByEditionAndId(edition: Edition, id: Long): List<Article>
+    fun findByEdition(edition: Edition): List<Article>
 
     fun findAllByEdition(edition: Edition): List<Article>
 
