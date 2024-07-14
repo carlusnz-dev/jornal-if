@@ -63,7 +63,7 @@ data class Article(
     @field:NotNull
     var edition : Edition = Edition(),
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY, mappedBy = "article")
+    @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY, mappedBy = "article")
     @field:NotNull
     val views : MutableSet<View> = mutableSetOf()
 
