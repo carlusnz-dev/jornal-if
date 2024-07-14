@@ -19,7 +19,7 @@ data class View(
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(name = "article_id")
     @field:NotNull
-    val article : Article,
+    val article : Article = Article(),
 
     @Temporal(TemporalType.TIMESTAMP)
     var dateViewed : LocalDateTime = LocalDateTime.now()
