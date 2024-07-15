@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
 import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
+import java.util.*
 
 @Entity
 data class Article(
@@ -65,6 +66,16 @@ data class Article(
 
     @OneToMany(cascade = [CascadeType.MERGE], fetch = FetchType.LAZY, mappedBy = "article")
     @field:NotNull
-    val views : MutableSet<View> = mutableSetOf()
+    var views : MutableSet<View> = mutableSetOf()
 
-)
+) {
+    override fun hashCode(): Int {
+        return Objects.hash(id, title, content)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Article) return false
+        return id == other.id
+    }
+}

@@ -50,12 +50,13 @@ class ArticleController {
             if (authentication.principal is UserDetailsImpl) {
                 val userDetail = authentication.principal as UserDetailsImpl
                 val user = userService.findById(userDetail.getId()!!).get()
+
+                if (articleOptional.user.id != user.id) {
+                    articleService.trackView(articleOptional, user)
+                }
+
                 articleService.trackView(articleOptional, user)
             }
-
-            // Count views
-            val views = articleOptional.views.size
-            model.addAttribute("views", views)
 
             // Share URLs
             val getUrl = "https://jornal.gremiorupestre.com.br/articles/${article.get().id}"
@@ -148,12 +149,19 @@ class ArticleController {
             updatedArticle.author = user.name
         }
 
+        val views = articleService.findById(id).get().views
+        updatedArticle.views = views
+
         articleService.updateArticle(id, updatedArticle)
         return "redirect:/articles"
     }
 
     @GetMapping("/delete/{id}")
     fun deleteArticle(@PathVariable id: Long): String {
+
+        val views = articleService.findById(id).get().views
+        views.forEach { view -> articleService.deleteView(view.id) }
+
         articleService.deleteById(id)
         return "redirect:/articles"
     }

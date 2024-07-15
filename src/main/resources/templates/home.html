@@ -98,7 +98,7 @@
                              th:style="'background: url(' + ${articles[1].imageUrl} + '); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100%; border-radius: 15px; padding: 10px;'">
                             <div class="card-body">
                                 <p class="text-muted fw-bold" th:text="${articles[1].category.getName()}"></p>
-                                <h3 class="card-title text-dark px-3 py-1 bg-white rounded-pill shadow text-start" th:text="${articles[2].title}"></h3>
+                                <h3 class="card-title text-dark px-3 py-1 bg-white rounded-pill shadow text-start" th:text="${articles[1].title}"></h3>
                             </div>
                         </div>
                     </a>
@@ -140,6 +140,27 @@
 
                 <!-- Article Card -->
                 <div class="row">
+
+                    <!-- for mobile -->
+                    <div class="d-block d-lg-none article" id="articleContainer">
+
+                        <div class="card mb-3" th:each="article, iterStart : ${articles}" th:if="${iterStart.index > 0 and iterStart.index <= 2}">
+                            <div class="card-img" id="articleImage">
+                                <img th:src="@{${article.imageUrl}}" class="img-fluid rounded-3" alt="Imagem do artigo">
+                            </div>
+                            <div class="card-body" id="articleContent">
+                                <p class="text-muted fw-medium text-start" th:text="${article.category.getName()}"></p>
+                                <h5 class="card-title text-start" th:text="${article.title}"></h5>
+                                <div class="d-md-block d-none">
+                                    <p class="card-subtile text-start" th:text="${article.subtitle}"></p>
+                                    <p class="text-muted text-start" th:text="${#temporals.format(article.dateCreated, 'dd/MM/yyyy')}"></p>
+                                </div>
+                                <a th:href="@{/articles/{id}(id=${article.id})}" class="btn btn-primary">Ler Mais</a>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="col-lg-8 article" id="articleContainer">
                         <div class="card mb-3" th:each="article, iterStart : ${articles}" th:if="${iterStart.index} > 2">
                             <div class="card-img" id="articleImage">

@@ -98,4 +98,10 @@ class ArticleService {
         return articleRepository.findByTitleContainingIgnoreCase(title)
     }
 
+    fun deleteView(id: Long?) {
+        if (id != null) {
+            vi.deleteById(id)
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package br.com.gremiorupestre.grer.model
 import jakarta.persistence.*
 import org.jetbrains.annotations.NotNull
 import java.time.LocalDateTime
+import java.util.*
 
 @Entity
 data class View(
@@ -24,4 +25,14 @@ data class View(
     @Temporal(TemporalType.TIMESTAMP)
     var dateViewed : LocalDateTime = LocalDateTime.now()
 
-)
+) {
+    override fun hashCode(): Int {
+        return Objects.hash(id, article.id)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is View) return false
+        return id == other.id
+    }
+}
