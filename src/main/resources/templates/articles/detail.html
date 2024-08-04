@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/article/detail.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/footer.css">
+    <script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
 
@@ -65,8 +66,8 @@
 
     <div class="row">
         <div class="col-md-12 article-header">
-            <img class="img" th:src="${article.getImageUrl()}" alt="Imagem do artigo">
-            <p class="text-muted text-center" th:text="${article.getCategory().name}"></p>
+            <img class="img rounded-3 shadow-sm" th:src="${article.getImageUrl()}" alt="Imagem do artigo">
+            <p class="text-muted fw-bold text-center" th:text="${article.getCategory().name}"></p>
         </div>
     </div>
 
@@ -75,6 +76,7 @@
         <!-- Article Title -->
         <div class="col-md-12 mb-3 article-title-header">
             <h1 class="text-center article-title" th:text="${article.title}"></h1>
+            <hr>
             <h3 class="text-center article-subtitle" th:text="${article.subtitle}"></h3>
         </div>
 
@@ -110,6 +112,64 @@
                         <a th:href="${shareUrlTwitter}" target="_blank" class="btn btn-info border-0 rounded-pill shadow-sm">
                             <i class="bi bi-twitter"></i>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="text-center">Comentários</h2>
+            <div class="card">
+
+                <div th:if="${#lists.isEmpty(article.comments)}" class="bg-warning-subtle border border-warning text-center p-2">
+                    <p class="text-dark m-0">Seja o primeiro a comentar!</p>
+                </div>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="row" sec:authorize="isAuthenticated()">
+                        <div class="col-md-12">
+                            <form th:action="@{/comments/save/{articleID}(articleID=${article.id})}" method="post">
+                                <div class="form-group mb-3">
+                                    <label for="content" class="form-label">Comentário</label>
+                                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Comentar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div th:each="comment : ${article.comments}" class="card mt-3">
+                                <div class="card-body row">
+                                    <div class="d-flex flex-column col-md-1 col-3">
+                                        <img class="rounded-circle" th:src="@{${comment.user.getImageUrl()}}" alt="Imagem de perfil do autor do comentário - NOT NULL" th:if="not #fields.isEmpty(article.user.imageUrl)">
+                                        <img class="rounded-circle" src="https://placehold.co/150?text=USER" alt="Imagem de perfil do autor do comentário" th:if="#fields.isEmpty(article.user.imageUrl)">
+                                        <p class="text-start text-muted m-0 mt-2" th:text="${comment.user.username}"></p>
+                                    </div>
+                                    <div class="col-md-11 col-9">
+                                        <p class="lead" th:utext="${comment.content}"></p>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <i class="bi bi-calendar"></i> <span th:text="${#temporals.format(comment.dateCreated, 'dd/MM/yyyy')}"></span>
+                                        </div>
+                                        <div>
+                                            <i class="bi bi-clock"></i> <span th:text="${#temporals.format(comment.dateCreated, 'HH:mm')}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end" sec:authorize="isAuthenticated()" th:if="${comment.article.user.id == #authentication.principal.id}">
+                                        <a th:href="@{/comments/delete/{commentID}(commentID=${comment.id})}" class="btn btn-danger btn-sm mt-2">Excluir</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -11,19 +11,19 @@ data class Comment(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id : Long? = null,
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, length = 500)
     @field:NotNull
-    val content : String = "",
+    var content : String = "",
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(name = "user_id")
     @field:NotNull
-    val user : User = User(),
+    var user : User? = User(),
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
     @JoinColumn(name = "article_id")
     @field:NotNull
-    val article : Article = Article(),
+    var article : Article = Article(),
 
     @Temporal(TemporalType.TIMESTAMP)
     var dateCreated : LocalDateTime = LocalDateTime.now()

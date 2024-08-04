@@ -75,12 +75,12 @@
             <!-- Article Card -->
             <div class="col-12 col-lg-6">
                 <h3 class="fw-bold text-center">Primeira Página</h3>
-                <div class="card rounded-3 mb-3" id="CardFirstPage">
+                <div class="card rounded-3 mb-3 shadow-sm" id="CardFirstPage">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center" id="articleContent" th:if="${not #lists.isEmpty(articles)}">
-                        <p class="text-muted fw-medium text-start" th:text="${articles[0].category.getName()}"></p>
-                        <h1 class="card-title text-start" th:text="${articles[0].title}"></h1>
+                        <p class="text-muted fw-medium text-center" th:text="${articles[0].category.getName()}"></p>
+                        <h3 class="card-title text-start fw-bold" th:text="${articles[0].title}"></h3>
                         <div class="d-md-block d-none text-center">
-                            <p class="card-subtile text-start" th:text="${articles[0].subtitle}"></p>
+                            <p class="card-subtile text-start text-uppercase" th:text="${articles[0].subtitle}"></p>
                             <p class="text-muted text-start" th:text="${#temporals.format(articles[0].dateCreated, 'dd/MM/yyyy')}"></p>
                         </div>
                         <a th:href="@{/articles/{id}(id=${articles[0].id})}" class="btn btn-primary">Ler Mais</a>
@@ -97,8 +97,8 @@
                         <div class="card-img bg-dark-subtle bg-opacity-25"
                              th:style="'background: url(' + ${articles[1].imageUrl} + '); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100%; border-radius: 15px; padding: 10px;'">
                             <div class="card-body">
-                                <p class="text-muted fw-bold" th:text="${articles[1].category.getName()}"></p>
-                                <h3 class="card-title text-dark px-3 py-1 bg-white rounded-pill shadow text-start" th:text="${articles[1].title}"></h3>
+                                <p class="text-muted fw-bold bg-light rounded-pill shadow-sm text-center" th:text="${articles[1].category.getName()}"></p>
+                                <h5 class="text-dark fw-bold px-3 py-1 bg-white rounded-3 shadow" th:text="${articles[1].title}"></h5>
                             </div>
                         </div>
                     </a>
@@ -111,8 +111,8 @@
                         <div class="card-img"
                              th:style="'background: url(' + ${articles[2].imageUrl} + '); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100%; border-radius: 15px; padding: 10px;'">
                             <div class="card-body">
-                                <p class="text-muted fw-bold" th:text="${articles[2].category.getName()}"></p>
-                                <h3 class="card-title text-dark px-3 py-1 bg-white rounded-pill shadow text-start" th:text="${articles[2].title}"></h3>
+                                <p class="text-muted fw-bold bg-light rounded-pill shadow-sm text-center" th:text="${articles[2].category.getName()}"></p>
+                                <h5 class="text-dark fw-bold px-3 py-1 bg-white rounded-3 shadow" th:text="${articles[2].title}"></h5>
                             </div>
                         </div>
                     </a>
@@ -128,7 +128,7 @@
         <!-- Title -->
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="text-center">Artigos</h2>
+                <h2 class="text-center">Notícias</h2>
                 <p class="text-center">Confira as notícias mais recentes sobre nosso campus.</p>
             </div>
         </div>

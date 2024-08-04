@@ -5,6 +5,7 @@ import br.com.gremiorupestre.grer.repository.RoleRepository
 import br.com.gremiorupestre.grer.repository.UserRepository
 import br.com.gremiorupestre.grer.security.SecurityConfig
 import br.com.gremiorupestre.grer.service.UserService
+import br.com.gremiorupestre.grer.util.FileUtil
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.multipart.MultipartFile
 
 @Controller
 class LogUserController {
@@ -24,6 +27,9 @@ class LogUserController {
 
     @Autowired
     private lateinit var roleRepository: RoleRepository
+
+    @Autowired
+    private lateinit var fileUtil: FileUtil
 
     // Get Mapping
     @GetMapping("/login")
@@ -46,6 +52,7 @@ class LogUserController {
     fun registerUser(
         model: Model,
         user: User,
+        @RequestParam("image") image: MultipartFile,
     ): String {
 
         // Check e-mail
@@ -54,6 +61,14 @@ class LogUserController {
             model.addAttribute("error", "Invalid email")
             return "redirect:/register?errorEmail"
         }
+
+        val imagePath = fileUtil.saveFile(image)
+        if (imagePath.isEmpty()) {
+            model.addAttribute("error", "Failed to save image")
+            return "redirect:/register?errorImage"
+        }
+
+        user.imageUrl = "https://firebasestorage.googleapis.com/v0/b/jornal-if-61544.appspot.com/o/$imagePath?alt=media"
 
         userService.saveUser(user)
 

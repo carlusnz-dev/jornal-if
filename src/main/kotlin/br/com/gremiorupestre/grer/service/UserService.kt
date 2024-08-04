@@ -4,6 +4,7 @@ import br.com.gremiorupestre.grer.model.User
 import br.com.gremiorupestre.grer.repository.PasswordResetTokenRepository
 import br.com.gremiorupestre.grer.repository.RoleRepository
 import br.com.gremiorupestre.grer.repository.UserRepository
+import br.com.gremiorupestre.grer.util.FileUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -13,7 +14,8 @@ import java.util.UUID
 class UserService (
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
-    private val passwordResetService: PasswordResetService
+    private val passwordResetService: PasswordResetService,
+    private val fileUtil: FileUtil
 ) {
 
     @Autowired
@@ -23,7 +25,7 @@ class UserService (
 
     fun findByEmail(email: String) = userRepository.findByEmail(email)
 
-    fun findById(id: UUID) = userRepository.findById(id)
+    fun findById(id: UUID?) = id?.let { userRepository.findById(it) }
 
     fun saveUser(user: User) {
 

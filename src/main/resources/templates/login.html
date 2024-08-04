@@ -11,13 +11,13 @@
     <link rel="stylesheet" href="css/login.css">
 </head>
 <body class="bg-login">
-<div class="container">
+<div class="container d-block">
     <!-- Mensagem de erro -->
     <div th:if="${param.error}" class="alert alert-danger mt-3" role="alert">
         Usuário ou senha inválidos!
     </div>
 
-    <div class="bg-white px-3 py-1 rounded-3 shadow-lg">
+    <div class="bg-white rounded-3 shadow-lg p-3 mx-auto align-self-center">
         <!-- logo -->
         <div class="logo">
             <img src="/img/logo.svg" alt="logo">

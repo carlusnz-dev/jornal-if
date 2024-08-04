@@ -25,7 +25,7 @@ class HomeController {
         val auth = SecurityContextHolder.getContext().authentication
         if (auth.principal is User) {
             val user = auth.principal as User
-            model.addAttribute("user", userService.findById(user.id!!).get())
+            model.addAttribute("user", userService.findById(user.id!!)?.get())
         }
 
         val articles = articleService.findAllByOrderByDateCreatedDesc()

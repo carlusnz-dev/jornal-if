@@ -23,6 +23,12 @@
     <div th:if="${param.errorEmail}" class="alert alert-danger" role="alert">
         Verifique o e-mail informado!
     </div>
+    <div th:if="${param.errorImage}" class="alert alert-danger" role="alert">
+        Verifique a imagem informada!
+    </div>
+    <div th:if="${param.errorPassword}" class="alert alert-danger" role="alert">
+        Verifique a senha informada!
+    </div>
 
     <div class="row">
 
@@ -36,7 +42,7 @@
         <!-- Formulário de cadastro -->
         <div class="col-md-6 col-12 d-flex flex-column align-items-center justify-content-center">
             <h1 class="text-center fw-bold mt-2 mb-3">Cadastro</h1>
-            <form class="form mx-auto w-100" method="post" th:action="@{/register/user}" th:object="${user}">
+            <form class="form mx-auto w-100" method="post" th:action="@{/register/user}" th:object="${user}" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="username" class="form-label">Nome de usuário</label>
                     <input type="text" class="form-control" id="username" name="username" th:field="*{username}" autofocus required>
@@ -52,6 +58,10 @@
                 <div class="mb-3">
                     <label for="surname" class="form-label">Sobrenome</label>
                     <input type="text" class="form-control" id="surname" name="surname" th:field="*{surname}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Imagem de perfil</label>
+                    <input type="file" class="form-control" id="image" name="image" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Senha</label>

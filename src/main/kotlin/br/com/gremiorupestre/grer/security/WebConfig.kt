@@ -51,4 +51,15 @@ class WebConfig : WebMvcConfigurer {
         return templateEngine
     }
 
+    @Bean
+    fun templateResolver(): SpringResourceTemplateResolver {
+        val templateResolver = SpringResourceTemplateResolver()
+        templateResolver.prefix = "classpath:/templates/"
+        templateResolver.suffix = ".html"
+        templateResolver.setTemplateMode("HTML5")
+        templateResolver.isCacheable = false
+        return templateResolver
+    }
+
+
 }

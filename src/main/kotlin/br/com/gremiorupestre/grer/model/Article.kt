@@ -11,7 +11,7 @@ data class Article(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id : Long? = null,
+    var id : Long? = null,
 
     @Column(unique = true)
     @field:NotNull

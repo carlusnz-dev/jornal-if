@@ -2,10 +2,7 @@ package br.com.gremiorupestre.grer.controller
 
 import br.com.gremiorupestre.grer.model.Article
 import br.com.gremiorupestre.grer.security.userdetails.UserDetailsImpl
-import br.com.gremiorupestre.grer.service.ArticleService
-import br.com.gremiorupestre.grer.service.CategoryService
-import br.com.gremiorupestre.grer.service.EditionService
-import br.com.gremiorupestre.grer.service.UserService
+import br.com.gremiorupestre.grer.service.*
 import br.com.gremiorupestre.grer.util.FileUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -31,6 +28,9 @@ class ArticleController {
     lateinit var userService: UserService
 
     @Autowired
+    lateinit var commentService: CommentService
+
+    @Autowired
     lateinit var fileUtil: FileUtil
 
     @GetMapping
@@ -49,14 +49,17 @@ class ArticleController {
             val authentication = SecurityContextHolder.getContext().authentication
             if (authentication.principal is UserDetailsImpl) {
                 val userDetail = authentication.principal as UserDetailsImpl
-                val user = userService.findById(userDetail.getId()!!).get()
+                val user = userService.findById(userDetail.getId()!!)?.get()
 
-                if (articleOptional.user.id != user.id) {
-                    articleService.trackView(articleOptional, user)
+                if (articleOptional.user.id != user?.id) {
+                    user?.let { articleService.trackView(articleOptional, it) }
                 }
 
-                articleService.trackView(articleOptional, user)
+                user?.let { articleService.trackView(articleOptional, it) }
             }
+
+            // Comments
+            model.addAttribute("comments", commentService.findCommentsByArticleId(id))
 
             // Share URLs
             val getUrl = "https://jornal.gremiorupestre.com.br/articles/${article.get().id}"
@@ -92,8 +95,8 @@ class ArticleController {
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetail = authentication.principal as UserDetailsImpl
-        val user = userService.findById(userDetail.getId()!!).get()
-        article.user = user
+        val user = userService.findById(userDetail.getId()!!)?.get()
+        article.user = user!!
 
         val edition = article.edition.id?.let { editionService.findById(it).orElseThrow { Exception("Edição não encontrada") } }
         if (edition != null) {
@@ -137,8 +140,8 @@ class ArticleController {
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetail = authentication.principal as UserDetailsImpl
-        val user = userService.findById(userDetail.getId()!!).get()
-        updatedArticle.user = user
+        val user = userService.findById(userDetail.getId()!!)?.get()
+        updatedArticle.user = user!!
 
         val edition = updatedArticle.edition.id?.let { editionService.findById(it).orElseThrow { Exception("Edição não encontrada") } }
         if (edition != null) {
