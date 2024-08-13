@@ -30,7 +30,7 @@ class UserService (
     fun saveUser(user: User): User {
 
         user.password = bCryptPasswordEncoder.encode(user.password)
-        val roleUser = roleRepository.findById(1L).orElse(null)
+        val roleUser = roleRepository.findById(2L).orElse(null)
         user.roles = mutableListOf(roleUser)
         userRepository.save(user)
 

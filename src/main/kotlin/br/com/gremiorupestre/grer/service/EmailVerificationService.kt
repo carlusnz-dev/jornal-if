@@ -25,12 +25,14 @@ class EmailVerificationService(
     }
 
     fun sendVerificationEmail(user: User, token: String) {
-        val url = "http://localhost:8080/confirm?token=$token"
+        val url = "http://jornal.gremiorupestre.com.br/confirm?token=$token"
 
         val email = SimpleMailMessage()
         email.setTo(user.email)
         email.subject = "Confirmação de e-mail - Jornal IF"
-        email.text = "Clique no link para confirmar seu e-mail: $url"
+        email.text = "Clique no link para confirmar seu e-mail no site Jornal IF: $url" +
+                "\n\nSe você não se cadastrou no site, por favor, ignore este e-mail." +
+                "\n\nAtenciosamente, Jornal IF."
         mailSender.send(email)
     }
 

@@ -42,7 +42,8 @@ class PasswordResetService {
             to = user.email,
             subject = "Reset Password",
             text = "Para redefinir sua senha, clique no link abaixo:\n\n" +
-                    "https://jornal.gremiorupestre.com.br/reset-password/$token"
+                    "https://jornal.gremiorupestre.com.br/reset-password/$token" +
+                    "\n\nEste link expira em 30 minutos."
         )
 
         return token
