@@ -109,9 +109,6 @@ class ArticleController {
         @ModelAttribute article: Article,
         @RequestParam("image") image: MultipartFile
         ): String {
-        if (!article.user.isVerified) {
-            return "redirect:/articles?notVerified"
-        }
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetail = authentication.principal as UserDetailsImpl
