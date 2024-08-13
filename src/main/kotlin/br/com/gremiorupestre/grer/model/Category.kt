@@ -17,4 +17,8 @@ data class Category(
     @field:NotNull
     val description : String = "",
 
+    @Lazy
+    @OneToMany(mappedBy = "category")
+    val articles : List<Article> = mutableListOf()
+
 )

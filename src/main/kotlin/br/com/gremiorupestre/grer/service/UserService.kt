@@ -27,13 +27,14 @@ class UserService (
 
     fun findById(id: UUID?) = id?.let { userRepository.findById(it) }
 
-    fun saveUser(user: User) {
+    fun saveUser(user: User): User {
 
         user.password = bCryptPasswordEncoder.encode(user.password)
-        val roleUser = roleRepository.findById(2L).orElse(null)
+        val roleUser = roleRepository.findById(1L).orElse(null)
         user.roles = mutableListOf(roleUser)
         userRepository.save(user)
 
+        return user
     }
 
     // Reset password
@@ -52,6 +53,6 @@ class UserService (
     // Validate password reset token
     fun validatePasswordResetToken(token: String) = passwordResetService.validatePasswordResetToken(token)
 
-    // Send email
+    fun flush() = userRepository.flush()
 
 }

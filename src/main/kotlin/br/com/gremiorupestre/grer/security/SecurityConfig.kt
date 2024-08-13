@@ -1,11 +1,15 @@
     package br.com.gremiorupestre.grer.security
 
+    import br.com.gremiorupestre.grer.security.userdetails.UserDetailsImpl
+    import br.com.gremiorupestre.grer.security.userdetails.UserDetailsServiceImpl
+    import org.springframework.beans.factory.annotation.Autowired
     import org.springframework.context.annotation.Bean
     import org.springframework.context.annotation.ComponentScan
     import org.springframework.context.annotation.Configuration
     import org.springframework.context.annotation.Lazy
     import org.springframework.context.annotation.Primary
     import org.springframework.security.authentication.AuthenticationManager
+    import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
     import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
     import org.springframework.security.config.annotation.web.builders.HttpSecurity
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -23,6 +27,8 @@
     @ComponentScan(basePackages = ["br.com.gremiorupestre.grer"])
     class SecurityConfig(
         @Lazy private val userDetailsService: UserDetailsService,
+        @Autowired
+        private val customUserDetailsService: UserDetailsServiceImpl,
         private val dataSource: DataSource
     ) {
 
@@ -33,7 +39,7 @@
                 .authorizeHttpRequests { authorizeRequests ->
                     authorizeRequests
                         // Public pages
-                        .requestMatchers("/", "/login", "/logout", "/register/**", "/articles", "/articles/{id}", "/navbar/**", "/editions", "/editions/{id}", "/editions/{id}/articles").permitAll()
+                        .requestMatchers("/", "/login", "/logout", "/verify", "/register/**", "/articles", "/articles/{id}", "/navbar/**", "/editions", "/editions/{id}", "/editions/{id}/articles", "/category", "/category/{id}", "/confirm").permitAll()
                         // Private pages for admin
                         .requestMatchers("/admin", "/articles/**", "/editions/**").hasRole("ADMIN")
                         // Private pages for news in articles
@@ -55,7 +61,7 @@
                 .logout { logout ->
                     logout
                         .logoutUrl("/logout")
-                        .logoutRequestMatcher(AntPathRequestMatcher("/logout", "GET"))
+                        .logoutRequestMatcher(AntPathRequestMatcher("/logout", "POST"))
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
                         .permitAll()

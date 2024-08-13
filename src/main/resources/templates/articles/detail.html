@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/css/article/detail.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/footer.css">
-    <script src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
 
@@ -92,7 +91,7 @@
 
         <!-- Article Content -->
         <div class="col-md-12 mt-5 article-content">
-            <p class="lead" th:utext="${article.content}"></p>
+            <p class="lead" th:utext="${contentHtml}"></p>
         </div>
 
     </div>
@@ -144,12 +143,24 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-12">
+                            <div th:if="${param.userNotVerified}">
+                                <div class="alert alert-warning" role="alert">
+                                    <p class="m-0">Você precisa verificar seu e-mail para comentar.</p>
+                                    <a href="/profile" class="alert-link">Verificar e-mail</a>
+                                </div>
+                            </div>
                             <div th:each="comment : ${article.comments}" class="card mt-3">
                                 <div class="card-body row">
                                     <div class="d-flex flex-column col-md-1 col-3">
-                                        <img class="rounded-circle" th:src="@{${comment.user.getImageUrl()}}" alt="Imagem de perfil do autor do comentário - NOT NULL" th:if="not #fields.isEmpty(article.user.imageUrl)">
-                                        <img class="rounded-circle" src="https://placehold.co/150?text=USER" alt="Imagem de perfil do autor do comentário" th:if="#fields.isEmpty(article.user.imageUrl)">
-                                        <p class="text-start text-muted m-0 mt-2" th:text="${comment.user.username}"></p>
+                                        <img class="rounded-circle"
+                                             th:src="@{${comment.user.imageUrl}}"
+                                             alt="Imagem de perfil do autor do comentário - NOT NULL"
+                                             th:if="${comment.user.imageUrl != null and !comment.user.imageUrl.isEmpty()}">
+                                        <img class="rounded-circle"
+                                             src="https://placehold.co/150?text=USER"
+                                             alt="Imagem de perfil do autor do comentário"
+                                             th:if="${comment.user.imageUrl == null or comment.user.imageUrl.isEmpty()}">
+                                        <p class="text-start fw-bold text-muted m-0 mt-2" th:text="${comment.user.username}"></p>
                                     </div>
                                     <div class="col-md-11 col-9">
                                         <p class="lead" th:utext="${comment.content}"></p>
@@ -164,7 +175,7 @@
                                             <i class="bi bi-clock"></i> <span th:text="${#temporals.format(comment.dateCreated, 'HH:mm')}"></span>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end" sec:authorize="isAuthenticated()" th:if="${comment.article.user.id == #authentication.principal.id}">
+                                    <div class="d-flex justify-content-end" sec:authorize="isAuthenticated()" th:if="${comment.user.id == #authentication.principal.id}">
                                         <a th:href="@{/comments/delete/{commentID}(commentID=${comment.id})}" class="btn btn-danger btn-sm mt-2">Excluir</a>
                                     </div>
                                 </div>

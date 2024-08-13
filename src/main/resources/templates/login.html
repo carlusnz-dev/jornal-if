@@ -16,6 +16,14 @@
     <div th:if="${param.error}" class="alert alert-danger mt-3" role="alert">
         Usuário ou senha inválidos!
     </div>
+    <!-- Mensagem de logout -->
+    <div th:if="${param.logout}" class="alert alert-success mt-3" role="alert">
+        Você saiu com sucesso!
+    </div>
+    <!-- mensagem de sucesso email de password reset -->
+    <div th:if="${param.successResetPass}" class="alert alert-success mt-3" role="alert">
+        Um email foi enviado para você com instruções para redefinir sua senha.
+    </div>
 
     <div class="bg-white rounded-3 shadow-lg p-3 mx-auto align-self-center">
         <!-- logo -->

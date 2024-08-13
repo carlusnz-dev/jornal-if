@@ -17,6 +17,7 @@ class UserDetailsServiceImpl : UserDetailsService {
         val user = userRepository.findByUsername(username).orElseThrow {
             RuntimeException("Usuário não encontrado")
         }
+
         return UserDetailsImpl(user)
     }
 

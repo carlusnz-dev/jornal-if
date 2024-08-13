@@ -1,0 +1,77 @@
+<div th:fragment="profileContent">
+    <div class="container">
+        <h1 class="display-3 fw-bold text-uppercase">Perfil</h1>
+
+        <div class="card border-0 shadow mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-uppercase">Informações do Usuário</h5>
+                <p class="card-text">Nome: <span th:text="${user.name} + ' ' + ${user.surname}">Carlos Alberto</span></p>
+                <p class="card-text">Email: <span th:text="${user.email}">carlos@example.com</span></p>
+                <p class="card-text">Data de Inscrição: <span th:text="${#temporals.format(user.dateCreated, 'dd/MM/yyyy')}">01/01/2022</span></p>
+                <p class="card-text">Conta verificada: <span th:if="${user.isVerified}">Sim</span><span th:unless="${user.isVerified}">Não</span></p>
+
+                <!-- Verification Card -->
+                <div class="card mt-4" th:if="${!user.isVerified}">
+                    <div class="card-body">
+                        <h5 class="card-title text-uppercase">Verificação de Conta</h5>
+                        <p class="card-text">Para verificar sua conta, clique no botão abaixo.</p>
+                        <a href="/create-token" class="btn btn-primary">Verificar Conta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Atividades Recentes</h5>
+                        <ul>
+<!--                            <li th:each="activity : ${user.activities}" th:text="${activity}">Comentou em um artigo.</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Estatísticas</h5>
+                        <canvas id="userStats"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ctx = document.getElementById('userStats').getContext('2d');
+    var userStats = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Artigos', 'Comentários', 'Curtidas'],
+            datasets: [{
+                label: 'Atividades',
+                data: [5, 3, 7],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>

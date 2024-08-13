@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornal IF - Perfil</title>
+    <title>Jornal IF - Dashboard</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/footer.css">
 </head>
@@ -17,28 +18,49 @@
 <!-- Navbar -->
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<!-- Profile -->
-<div class="container" id="MainContent">
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="display-4">Perfil</h1>
-            <hr>
-        </div>
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Informações do Usuário <strong th:text="${user.name}"></strong></h5>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="/profile" class="active"><i class="bi bi-person"></i> Perfil</a>
+    <div class="disabled">
+        <a href="#"><i class="bi bi-gear"></i> Configurações</a>
+        <a href="#"><i class="bi bi-bell"></i> Notificações</a>
+        <form action="/logout" method="post">
+            <button type="submit" class="btn btn-danger mt-3 ms-2 mx-auto"><i class="bi bi-box-arrow-right"></i> Sair</button>
+        </form>
     </div>
 </div>
 
+<!-- Main Content -->
+<div id="MainContent">
+    <!-- message email verification -->
+    <div th:if="${param.verificationEmailSent}" class="alert alert-success mt-3" role="alert">
+        Um e-mail de verificação foi enviado para o seu endereço de e-mail. <strong th:text="${user.email}"></strong>
+        <br>
+        <a href="/resend-verification-email" class="link">Reenviar e-mail de verificação</a>
+    </div>
+    <!-- message already verified -->
+    <div th:if="${param.alreadyVerified}" class="alert alert-info mt-3" role="alert">
+        Seu e-mail já foi verificado.
+    </div>
+    <!-- message email already sent -->
+    <div th:if="${param.emailAlreadySent}" class="alert alert-info mt-3" role="alert">
+        Um e-mail de verificação já foi enviado para o seu endereço de e-mail. <strong th:text="${user.email}"></strong>
+    </div>
+    <!-- message password reset -->
+    <div th:if="${param.passwordReset}" class="alert alert-success mt-3" role="alert">
+        Um e-mail de redefinição de senha foi enviado para o seu endereço de e-mail. <strong th:text="${user.email}"></strong>
+    </div>
+    <div th:replace="fragments/profile :: profileContent"></div>
+</div>
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+<!-- Custom JS -->
+<script src="/js/profile.js"></script>
 </body>
 </html>

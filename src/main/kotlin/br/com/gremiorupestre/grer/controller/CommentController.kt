@@ -36,20 +36,24 @@ class CommentController {
         if (authentication.principal is UserDetailsImpl) {
             val userDetail = authentication.principal as UserDetailsImpl
             val user = userService.findById(userDetail.getId()!!)!!.get()
-            if (user != null) {
-                comment.user = user
-            } else {
-                throw IllegalArgumentException("User not found")
-            }
+            comment.user = user ?: throw IllegalArgumentException("User not found")
         } else {
             throw IllegalArgumentException("User not authenticated")
         }
+        if (!comment.user!!.isVerified) {
+            return "redirect:/articles/${articleID}?userNotVerified"
+        }
         val article = articleService.findById(articleID).orElseThrow { IllegalArgumentException("Article not found") }
         comment.article = article
-        println("Comment: $comment")
+
+        if (comment.content.isEmpty()) {
+            throw IllegalArgumentException("Comment content is required")
+        }
+
         commentService.save(comment)
         return "redirect:/articles/${articleID}"
     }
+
 
     @GetMapping("/delete/{commentID}")
     fun delete(@PathVariable commentID: Long): String {

@@ -1,17 +1,13 @@
 package br.com.gremiorupestre.grer.controller
 
 import br.com.gremiorupestre.grer.model.User
-import br.com.gremiorupestre.grer.repository.RoleRepository
-import br.com.gremiorupestre.grer.repository.UserRepository
-import br.com.gremiorupestre.grer.security.SecurityConfig
+import br.com.gremiorupestre.grer.repository.EmailVerificationTokenRepository
+
+import br.com.gremiorupestre.grer.service.EmailVerificationService
 import br.com.gremiorupestre.grer.service.UserService
 import br.com.gremiorupestre.grer.util.FileUtil
-import jakarta.servlet.http.HttpServletRequest
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Lazy
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -26,10 +22,13 @@ class LogUserController {
     private lateinit var userService: UserService
 
     @Autowired
-    private lateinit var roleRepository: RoleRepository
+    private lateinit var fileUtil: FileUtil
 
     @Autowired
-    private lateinit var fileUtil: FileUtil
+    private lateinit var emailVerificationService: EmailVerificationService
+
+    @Autowired
+    private lateinit var tokenRepository: EmailVerificationTokenRepository
 
     // Get Mapping
     @GetMapping("/login")
@@ -39,14 +38,11 @@ class LogUserController {
 
     @GetMapping("/register")
     fun returnRegisterPage(model: Model): String {
-
         model.addAttribute("user", User())
-
         return "register"
     }
 
     // Post Mapping
-
     @Transactional
     @PostMapping("/register/user")
     fun registerUser(
@@ -54,14 +50,14 @@ class LogUserController {
         user: User,
         @RequestParam("image") image: MultipartFile,
     ): String {
-
-        // Check e-mail
+        // Validação do e-mail
         val emailPattern = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}\$")
         if (!emailPattern.matches(user.email)) {
             model.addAttribute("error", "Invalid email")
             return "redirect:/register?errorEmail"
         }
 
+        // Salvamento da imagem
         val imagePath = fileUtil.saveFile(image)
         if (imagePath.isEmpty()) {
             model.addAttribute("error", "Failed to save image")
@@ -72,11 +68,22 @@ class LogUserController {
 
         userService.saveUser(user)
 
-        if (user.id != null) {
-            println("User saved with success: ${user.id}")
-        }
-
         return "redirect:/login"
     }
 
+//    @GetMapping("/verify")
+//    fun verifyEmail(@RequestParam("token") token: String, model: Model): String {
+//        val emailVerificationToken = tokenRepository.findByToken(token)
+//
+//        if (emailVerificationToken == null || !emailVerificationToken.isValid()) {
+//            model.addAttribute("error", "Invalid or expired token")
+//            return "redirect:/login?error"
+//        }
+//
+//        val user = emailVerificationToken.user
+//        user?.isVerified = true
+//        userService.saveUser(user!!)
+//
+//        return "redirect:/login?verified"
+//    }
 }

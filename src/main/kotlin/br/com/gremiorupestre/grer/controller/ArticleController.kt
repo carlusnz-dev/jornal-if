@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 
 @Controller
 @RequestMapping("/articles")
@@ -58,6 +60,18 @@ class ArticleController {
                 user?.let { articleService.trackView(articleOptional, it) }
             }
 
+            // Render markdown content
+            val parser = Parser.builder().build()
+            val document = parser.parse(articleOptional.content)
+            val renderer = HtmlRenderer.builder().build()
+            val contentHtml = renderer.render(document)
+
+//            val markdown = "# Título\n\nEsse é um **conteúdo** em Markdown."
+//            val document = parser.parse(markdown)
+//            val contentHtml = renderer.render(document)
+
+            model.addAttribute("contentHtml", contentHtml)
+
             // Comments
             model.addAttribute("comments", commentService.findCommentsByArticleId(id))
 
@@ -81,6 +95,9 @@ class ArticleController {
 
     @GetMapping("/new")
     fun showNewArticleForm(model: Model): String {
+        if (editionService.findAll().isEmpty() or categoryService.findAll().isEmpty()) {
+            return "redirect:/editions/new?error=empty"
+        }
         model.addAttribute("article", Article())
         model.addAttribute("categories", categoryService.findAll())
         model.addAttribute("editions", editionService.findAll())
@@ -92,6 +109,9 @@ class ArticleController {
         @ModelAttribute article: Article,
         @RequestParam("image") image: MultipartFile
         ): String {
+        if (!article.user.isVerified) {
+            return "redirect:/articles?notVerified"
+        }
 
         val authentication = SecurityContextHolder.getContext().authentication
         val userDetail = authentication.principal as UserDetailsImpl

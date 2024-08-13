@@ -102,7 +102,7 @@ class ResetPassController {
             }
 
             val token = resetService.createPasswordResetTokenForUser(email)
-            return "redirect:/reset-password/$token"
+            return "redirect:/login?successResetPass"
         } else {
             model.addAttribute("error", "Usuário não encontrado.")
             return "redirect:/forgot-password?error"
